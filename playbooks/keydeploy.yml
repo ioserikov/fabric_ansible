@@ -7,22 +7,17 @@
   
   - name: copy public key to destination
     copy:
-      src: "{{ pathdir }}{{ pubkey }}"
-      dest: /home/{{ username }}/.ssh/
-      owner: "{{ username }}"
-      mode: u=rw,g=r,o=rw
-      backup: yes
+     src: "{{ pathdir }}{{ pubkey }}"
+     dest: /home/{{ username }}/.ssh/
+     owner: "{{ username }}"
+     mode: u=rw,g=r,o=rw
+     backup: yes
 
   - name: remote add key to authorized keys
     shell: cat {{ pubkey }} >> authorized_keys
     args:
      chdir: /home/{{ username }}/.ssh/
         
-
-
-
-
-
 
  # - name: create empty file for public key
   #  file: 

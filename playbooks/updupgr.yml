@@ -1,0 +1,8 @@
+- hosts: hv
+  tasks:
+  - name: apt update and upgrade
+    shell: apt-get update
+
+  - name:  upgrade in scilence
+    shell: apt-get upgrade -f  
+    
