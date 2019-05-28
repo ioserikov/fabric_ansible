@@ -1,0 +1,3 @@
+hosts:
+  baremetal:
+    inc-hv0[1-3]:     

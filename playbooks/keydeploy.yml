@@ -1,0 +1,18 @@
+- hosts: inc_hv_hosts
+  tasks:
+  - name: create dir for ssh key
+    file:
+      path: "/home/<username>/.ssh"
+      state: directory
+  
+  - name: create empty file for public key
+    file: 
+        path: "/home/<username>/.ssh/authorized_keys"
+        state: touch
+
+  - name: put key to the file
+    lineinfile:
+        path: "/home/<username>/.ssh/authorized_keys"
+        line: "{{ pubkey}}"
+
+
