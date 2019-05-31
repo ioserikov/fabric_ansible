@@ -1,49 +1,79 @@
-# main of host prepare task
+# main of host prepare tasks
+# we copy src and install from apt and src:  Curl, Docker,Docker-Compose, Fabric, golang
+
 ---
 - name: create dir for ssh key
-    file:
-      path: "/home/{{ username }}/.ssh"
-      state: directory
+  file:
+    path: "~/.ssh"
+    state: directory
    
 
-  - name: copy public key to destination
-    copy:
-     src: "{{ pathdir }}{{ pubkey }}"
-     dest: /home/{{ username }}/.ssh/
-     owner: "{{ username }}"
-     mode: u=rw,g=r,o=rw
-     backup: yes
+- name: copy public key to destination
+  copy:
+   src: "{{ pubkey }}"
+   dest: ~/.ssh/
+   #owner: "{{ username }}"
+   mode: u=rw,g=r,o=rw
+   backup: yes
     
 
-  - name: remote add key to authorized keys
-    shell: cat {{ pubkey }} >> authorized_keys
-    args:
-     chdir: /home/{{ username }}/.ssh/
+- name: remote add key to authorized keys
+  shell: cat {{ pubkey }} >> authorized_keys
+  args:
+    chdir: ~/.ssh/
         
- - name: copy repos
-    copy:
-     src: "{{ pathdir }}{{ src }}"
-     dest: "/etc/apt"
-     backup: yes
-    become: yes
-
-  - name: add repos from library
-    shell: cat {{ src }} > sources.list
-    args:
-     chdir: /etc/apt/
-    become: yes 
 
    
-  - name: apt update and upgrade
-    shell: apt-get update
-    become: yes
+- name: apt update cache
+  apt:
+    update_cache: yes
+  become: yes
     
 
-  - name:  upgrade in scilence
-    shell: apt-get upgrade -f 
-    become: yes 
+- name:  upgrade in scilence
+  apt:
+    name: "*"
+    state: latest
+  become: yes  
     
-    name: install prerequisities
+
+
+- name: "install prerequisities:  install CURL"
+  apt:
+    name: curl
+    state: latest
+  become: yes
     
+
+
+- name: "create dir for go"
+  
+  file:
+    path: "~/go"
+    state: directory
+ 
+  
+  
+- name: copy go src
+  copy:
+    src: "{{ role_path }}/files/go.tar.gz"
+    dest: "{{ golang_dir }}"
+    backup: yes
+
+  
+- name: extract go  
+  command: tar -xsvvf go.tar.gz
+  args: 
+    chdir: "~/go" 
+    
+  
+  
+  
+- name: copy fabric src  
+  copy:
+    src: "{{ role_path }}/files/fab.tar"
+    dest: "{{ fabric_src_dir}}"
+    backup: yes
+  become: yes
 
 

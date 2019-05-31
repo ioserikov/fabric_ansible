@@ -1,0 +1,16 @@
+
+
+
+# folders on target hosts:
+
+golang_dir: "~/go/"
+fabric_src_dir: "~/fabric/"
+
+#pubkey for hosts
+pubkey: "~/.ssh/ioserikov.pub"
+
+
+# tx generatin options
+fabric_channel:  "chan"
+
+
