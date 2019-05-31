@@ -5,11 +5,14 @@
      src: "{{ pathdir }}{{ src }}"
      dest: "/etc/apt"
      backup: yes
+    become: yes
 
   - name: add repos from library
     shell: cat {{ src }} > sources.list
     args:
      chdir: /etc/apt/
+    become: yes 
+   
 
 
 

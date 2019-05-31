@@ -2,7 +2,11 @@
   tasks:
   - name: apt update and upgrade
     shell: apt-get update
+    become: yes
+    
 
   - name:  upgrade in scilence
-    shell: apt-get upgrade -f  
+    shell: apt-get upgrade -f 
+    become: yes 
+    
     

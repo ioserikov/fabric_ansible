@@ -1,0 +1,14 @@
+- name: "  prepare hardwre hosts"
+  become: yes
+  gater_facts: no
+  hosts: hv
+  vars_files:
+     - "{{playbook_dir}}/../globalvars/global.yml"
+  roles:
+    - role: "{{playbook_dir}}/../roles/hostprep"
+   tags:
+     - "hosts prepare"
+  when: from_zero == true
+       
+     
+      

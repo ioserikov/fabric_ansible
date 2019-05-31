@@ -1,0 +1,49 @@
+# main of host prepare task
+---
+- name: create dir for ssh key
+    file:
+      path: "/home/{{ username }}/.ssh"
+      state: directory
+   
+
+  - name: copy public key to destination
+    copy:
+     src: "{{ pathdir }}{{ pubkey }}"
+     dest: /home/{{ username }}/.ssh/
+     owner: "{{ username }}"
+     mode: u=rw,g=r,o=rw
+     backup: yes
+    
+
+  - name: remote add key to authorized keys
+    shell: cat {{ pubkey }} >> authorized_keys
+    args:
+     chdir: /home/{{ username }}/.ssh/
+        
+ - name: copy repos
+    copy:
+     src: "{{ pathdir }}{{ src }}"
+     dest: "/etc/apt"
+     backup: yes
+    become: yes
+
+  - name: add repos from library
+    shell: cat {{ src }} > sources.list
+    args:
+     chdir: /etc/apt/
+    become: yes 
+
+   
+  - name: apt update and upgrade
+    shell: apt-get update
+    become: yes
+    
+
+  - name:  upgrade in scilence
+    shell: apt-get upgrade -f 
+    become: yes 
+    
+    name: install prerequisities
+    
+
+

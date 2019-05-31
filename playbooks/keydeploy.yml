@@ -4,7 +4,8 @@
     file:
       path: "/home/{{ username }}/.ssh"
       state: directory
-  
+   
+
   - name: copy public key to destination
     copy:
      src: "{{ pathdir }}{{ pubkey }}"
@@ -12,6 +13,7 @@
      owner: "{{ username }}"
      mode: u=rw,g=r,o=rw
      backup: yes
+    
 
   - name: remote add key to authorized keys
     shell: cat {{ pubkey }} >> authorized_keys
@@ -19,14 +21,4 @@
      chdir: /home/{{ username }}/.ssh/
         
 
- # - name: create empty file for public key
-  #  file: 
-   #     path: "/home/{{ username }}/.ssh/authorized_keys"
-   #     state: touch
-
- # - name: put key to the file
- #   lineinfile:
- #       path: "/home/{{ username }}/.ssh/authorized_keys"
- #       line: "{{ pubkey }}"
-
-
+ 
