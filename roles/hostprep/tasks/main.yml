@@ -42,7 +42,7 @@
   apt:
     name: curl
     state: latest
-  become: yes
+  #become: yes
     
 
 
@@ -51,6 +51,7 @@
   file:
     path: "~/go"
     state: directory
+  become: no  
  
   
   
@@ -58,13 +59,17 @@
   copy:
     src: "{{ role_path }}/files/go.tar.gz"
     dest: "{{ golang_dir }}"
-    backup: yes
-
+    #backup: yes
+  become: no
   
 - name: extract go  
-  command: tar -xsvvf go.tar.gz
-  args: 
-    chdir: "~/go" 
+  unarchive:  
+    src: "{{ golang_dir }}/go.tar.gz"
+    dest: "{{ golang_dir }}"
+    remote_src: yes
+  become: no  
+    
+
     
   
   
@@ -74,6 +79,6 @@
     src: "{{ role_path }}/files/fab.tar"
     dest: "{{ fabric_src_dir}}"
     backup: yes
-  become: yes
+  #become: yes
 
 
