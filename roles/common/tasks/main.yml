@@ -1,0 +1,15 @@
+##  role for basic fabric basic preps 
+# crypto material and config files for fabric instances 
+
+---
+
+- shell: mkdir '{{ fabric_dir }}' '{{ config_dir }}' '{{ binary_dir }}' '{{ msp_dir }}'
+  args:
+    warn: no
+  become: yes
+
+#- name: Generate crypto-config templates
+#  template:
+#    src: 
+#    dest: 
+#    backup: yes

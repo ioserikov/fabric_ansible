@@ -1,3 +1,4 @@
+## hostprep/tasks/main.yml - task for instaling all prerequisities for HLF fabric on target hosts
 - name: "  prepare hardwre hosts"
   become: yes
   gather_facts: no
@@ -8,7 +9,11 @@
     - role: "{{playbook_dir}}/../roles/hostprep"
   tags:
      - "hosts prepare"
-  #when: from_zero == true
+  # when: from_zero == "true"
+
+- name: " prepare HLF dirs and files"
+  gather_facts: no
+  hosts: hv
+  roles:
+      - "{{playbook_dir}}/../roles/common"   
        
-     
-      

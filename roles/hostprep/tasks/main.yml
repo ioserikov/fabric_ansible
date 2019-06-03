@@ -51,27 +51,38 @@
   become: yes
 
 
+- name: git config for fabric
+  git_config:
+    name: core.autocrlf
+    scope: global
+    value: "false"
+
+- git_config:
+    name: core.longpaths
+    scope: global
+    value: "true"    
+
+
     
 
 
-- name: "create dir for go"
+- name: "golang install"
   file:
     path: "~/go"
     state: directory
   become: no  
- 
   
   
-- name: copy go src
-  copy:
+#- name: copy go src
+- copy:
     src: "{{ role_path }}/files/go.tar.gz"
     dest: "{{ golang_dir }}"
     backup: yes
   become: no
   
 
-- name: extract go  
-  unarchive:  
+#- name: extract go  
+- unarchive:  
     src: "{{ golang_dir }}/go.tar.gz"
     dest: "{{ golang_dir }}"
     remote_src: yes
@@ -89,6 +100,13 @@
   become: no
 
 
+- unarchive:
+    src: "{{ fabric_src_dir}}/fab.tar"
+    dest: "{{ fabric_src_dir}}"
+    remote_src: yes
+  become: no  
+
+
 - name: add repo and gpg key for docker install
   apt_key:
     url: https://download.docker.com/linux/debian/gpg
@@ -96,16 +114,16 @@
   become: yes  
 
 
-- name: add docker src to apt repo
-  apt_repository:
+#- name: add docker src to apt repo
+- apt_repository:
     repo: "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
     state: present
     update_cache: yes
   become: yes    
   
   
-- name: install docker repos
-  apt:
+#- name: install docker repos
+- apt:
     name: 
       - docker-ce
       - docker-ce-cli
@@ -115,10 +133,10 @@
   become: yes 
 
 
-- name: install docker composer by curl
-  shell: curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#- name: install docker composer by curl
+- shell: curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   args:
-    warn: no
+     warn: no
   become: yes
 
 
