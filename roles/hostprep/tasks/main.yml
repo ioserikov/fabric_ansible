@@ -27,6 +27,7 @@
 - name: apt update cache
   apt:
     update_cache: yes
+    force_apt_get: yes
   become: yes
     
 
@@ -34,15 +35,22 @@
   apt:
     name: "*"
     state: latest
+    force_apt_get: yes
   become: yes  
     
 
 
 - name: "install prerequisities:  install CURL"
   apt:
-    name: curl
+    name: 
+      - curl
+      - mc 
+      - apt-transport-https
     state: latest
-  #become: yes
+    force_apt_get: yes
+  become: yes
+
+
     
 
 
@@ -59,7 +67,7 @@
   copy:
     src: "{{ role_path }}/files/go.tar.gz"
     dest: "{{ golang_dir }}"
-    #backup: yes
+    backup: yes
   become: no
   
 - name: extract go  
@@ -69,8 +77,7 @@
     remote_src: yes
   become: no  
     
-
-    
+ 
   
   
   
@@ -82,3 +89,37 @@
   #become: yes
 
 
+- name: add repo and gpg key for docker install
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present  
+  become: yes  
+
+
+- name: add docker src to apt repo
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
+    state: present
+    update_cache: yes
+  become: yes    
+  
+  
+- name: install docker repos
+  apt:
+    name: 
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io 
+    state: latest
+    force_apt_get: yes
+  become: yes 
+
+
+- name: install docker composer
+  
+
+
+# docker - add repo and install compose and docker
+#- name:   docker install
+#  script: dockinst.sh
+ # become: yes
