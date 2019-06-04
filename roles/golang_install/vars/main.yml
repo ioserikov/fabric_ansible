@@ -1,0 +1,5 @@
+## vars for goang install roles
+
+new_go_version: 1.11.10
+home_dir: ~/
+

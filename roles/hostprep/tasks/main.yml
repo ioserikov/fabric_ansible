@@ -46,6 +46,7 @@
       - mc 
       - apt-transport-https
       - git
+      - qemu
     state: latest
     force_apt_get: yes
   become: yes
@@ -63,32 +64,20 @@
     value: "true"    
 
 
+- name: instal GO by role
+  include_role: 
+    name: "{{playbook_dir}}/../roles/golang_install"
+  
     
-
-
-- name: "golang install"
-  file:
-    path: "~/go"
-    state: directory
-  become: no  
-  
-  
-#- name: copy go src
-- copy:
-    src: "{{ role_path }}/files/go.tar.gz"
-    dest: "{{ golang_dir }}"
-    backup: yes
-  become: no
-  
-
-#- name: extract go  
-- unarchive:  
-    src: "{{ golang_dir }}/go.tar.gz"
-    dest: "{{ golang_dir }}"
-    remote_src: yes
-  become: no  
     
- 
+#- name: go get dependicies for go
+ # shell:
+  #  "{{ item }}"
+  #become: no
+  #with_items:
+  #  - go get -u github.com/golang/protobuf/proto
+  #  - go get -u github.com/hyperledger/fabric     
+  
   
   
   
@@ -101,8 +90,8 @@
 
 
 - unarchive:
-    src: "{{ fabric_src_dir}}/fab.tar"
-    dest: "{{ fabric_src_dir}}"
+    src: "{{ fabric_src_dir }}/fab.tar"
+    dest: "{{ fabric_src_dir }}"
     remote_src: yes
   become: no  
 

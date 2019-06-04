@@ -3,10 +3,20 @@
 
 ---
 
-- shell: mkdir '{{ fabric_dir }}' '{{ config_dir }}' '{{ binary_dir }}' '{{ msp_dir }}'
+- shell: mkdir -p '{{ fabric_dir }}' '{{ config_dir }}' '{{ binary_dir }}' '{{ msp_dir }}'
   args:
     warn: no
   become: yes
+   
+
+
+- name: generate cryptogen bin for hosts from src
+  command: ls -a
+  #args:
+  #  chdir: "{{ fabric_src_dir }}"
+#   become: no  
+
+
 
 #- name: Generate crypto-config templates
 #  template:
