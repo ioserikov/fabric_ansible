@@ -20,37 +20,55 @@
   shell: cat {{ pubkey }} >> authorized_keys
   args:
     chdir: ~/.ssh/
+
+
+#- name: clear repos
+#  apt_repository:
+#    repo: *    
+#    state: absent
+#  become: yes   
+
+
+
+
+# TODO - make diffirent repos according to linux version
+- name: add apt repos
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    #update: yes
+  with_items:
+      - deb http://gate-apt-proxy.tsed.orglot.office/debian buster main contrib non-free
+      - deb-src http://gate-apt-proxy.tsed.orglot.office/debian buster main contrib non-free
+      - deb http://gate-apt-proxy.tsed.orglot.office/debian buster-updates main contrib non-free
+      - deb-src http://gate-apt-proxy.tsed.orglot.office/debian buster-updates main contrib non-free
+  become: yes  
         
 
    
-- name: apt update cache
+- name: update cache
   apt:
     update_cache: yes
     force_apt_get: yes
   become: yes
     
 
-- name:  upgrade in scilence
-  apt:
-    name: "*"
-    state: latest
-    force_apt_get: yes
-  become: yes  
+#- name:  upgrade in scilence
+#  apt:
+#    name: "*"
+#    state: latest
+#    force_apt_get: yes
+#  become: yes  
     
 
 
 - name: "install prerequisities:  CURL, GIT, MC"
   apt:
-    name: 
-      - curl
-      - mc 
-      - apt-transport-https
-      - git
-      - qemu
+    name: ['curl', 'mc', 'apt-transport-https', 'git', 'qemu', 'screen']
     state: latest
     force_apt_get: yes
   become: yes
-
+  
 
 - name: git config for fabric
   git_config:
@@ -68,10 +86,7 @@
   include_role: 
     name: "{{playbook_dir}}/../roles/golang_install"
   
-    
-    
- 
-  
+         
   
   
 - name: copy fabric src  
@@ -98,7 +113,7 @@
 
 #- name: add docker src to apt repo
 - apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian buster stable"
     state: present
     update_cache: yes
   become: yes    

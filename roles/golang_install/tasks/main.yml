@@ -8,11 +8,12 @@
   - debug: msg="go_version={{go_version.stdout}}"
   - debug: msg="new_go_version={{new_go_version}}"
  
+ # TODO - exit without fail  if go is working
+
  # - name: continue only when version is older
  #   fail: msg="Version already exists"
  #   when: go_version.stdout != "" and "go_version.stdout"
- 
-  - debug: msg="continuing with installation"
+   - debug: msg="continuing with installation"
  
   - name: download golang tar 
     get_url:
@@ -21,6 +22,7 @@
       
       #mode: 0440
      
+  
   - name: Remove old installation of Go
     file:
       path: /usr/local/go

@@ -10,9 +10,11 @@
    
 
 - name: prepare dependicies for fabric binares compile
-  command: {{ item }}
+  command: "{{ item }}"
   with_items:
-    - 
+    - go get github.com/hyperldger/fabric
+
+
 
 
 
