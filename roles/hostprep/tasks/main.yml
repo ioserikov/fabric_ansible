@@ -70,14 +70,7 @@
   
     
     
-#- name: go get dependicies for go
- # shell:
-  #  "{{ item }}"
-  #become: no
-  #with_items:
-  #  - go get -u github.com/golang/protobuf/proto
-  #  - go get -u github.com/hyperledger/fabric     
-  
+ 
   
   
   

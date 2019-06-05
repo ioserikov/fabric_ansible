@@ -9,6 +9,12 @@
   become: yes
    
 
+- name: prepare dependicies for fabric binares compile
+  command: {{ item }}
+  with_items:
+    - 
+
+
 
 - name: generate cryptogen bin for hosts from src
   command: ls -a
