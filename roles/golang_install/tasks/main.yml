@@ -13,7 +13,7 @@
  # - name: continue only when version is older
  #   fail: msg="Version already exists"
  #   when: go_version.stdout != "" and "go_version.stdout"
-   - debug: msg="continuing with installation"
+  - debug: msg="continuing with installation"
  
   - name: download golang tar 
     get_url:
