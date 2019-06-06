@@ -1,0 +1,22 @@
+
+- hosts: hv
+  vars_files:
+     - "{{playbook_dir}}/../globalvars/global.yml"
+  tasks:
+
+  - name: clear 
+    file: 
+      path: "{{ item }}"
+      state: absent
+    with_items:
+      - "{{ golang_dir }}"
+      - "{{ fabric_src_dir }}"
+      - "{{ fabric_dir }}"
+    become: yes
+
+
+  #- name: git
+  #  git: 
+  #    repo: 'https://github.com/hyperledger/fabric'
+  #    dest:  "{{ fabric_src_dir }}"
+  #    version: release-"{{ fabric_release }}"

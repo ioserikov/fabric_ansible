@@ -3,14 +3,31 @@
 
 # folders on target hosts:
 
-golang_dir: "~/go/"
-fabric_src_dir: "~/fabric/"
+username: "{{ ansible_user_id }}"
+
+
+golang_dir: "/home/{{ username }}/go/"
+fabric_src_dir: "/home/{{ username }}/fabric/"
+home_dir: "/home/{{ username }}/"
+
 
 #pubkey for hosts
 pubkey: "~/.ssh/ioserikov.pub"
 
+# github_release:
+new_go_version: 1.11.10
+fabric_release: 1.4
 
 # tx generatin options
 fabric_channel:  "chan"
 
 
+# common/vars/main.yml
+
+consensus_type: raft # kafka / solo
+
+# dirs for fabric instances
+fabric_dir:  /opt/fabric
+config_dir: /opt/fabric/config
+binary_dir: /opt/fabric/bin
+msp_dir: /opt/fabric/msp

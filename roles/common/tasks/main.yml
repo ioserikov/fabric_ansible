@@ -2,27 +2,51 @@
 # crypto material and config files for fabric instances 
 
 ---
-
 - shell: mkdir -p '{{ fabric_dir }}' '{{ config_dir }}' '{{ binary_dir }}' '{{ msp_dir }}'
   args:
     warn: no
   become: yes
    
 
-- name: prepare dependicies for fabric binares compile
-  command: "{{ item }}"
-  with_items:
-    - go get github.com/hyperldger/fabric
+ 
+#- name: modify script for cryptogen
+#  blockinfile:
+#      path: "{{ fabric_src_dir}}modules.sh"
+#      mode: 777
+#      block: |
+#         cd {{ fabric_src_dir }}
+#         go mod init
+#         go mod tidy
+#         cd {{ fabric_src_dir }}common/tools/cryptogen
+#         sudo cp cryptogen {{ binary_dir }}
+#      insertafter: EOF
+#     create: yes
+#  become: no    
 
 
+#- name:  and run the sript
+#  shell: "bash {{ fabric_src_dir }}modules.sh"
+#  args:
+#   chdir: "{{ fabric_src_dir }}"
 
 
+      
 
+#
 - name: generate cryptogen bin for hosts from src
-  command: ls -a
-  #args:
-  #  chdir: "{{ fabric_src_dir }}"
-#   become: no  
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ fabric_src_dir }}"
+  with_items:    
+    - /usr/local/go/bin/go get github.com/hyperledger/fabric
+    - cd {{ fabric_src_dir }}
+    - /usr/local/go/bin/go mod init
+    - /usr/local/go/bin/go mod tidy
+    - cd {{ fabric_src_dir }}common/tools/cryptogen
+    - /usr/local/go/bin/go build
+    - cp cryptogen {{ binary_dir }}
+  become: yes 
+
 
 
 

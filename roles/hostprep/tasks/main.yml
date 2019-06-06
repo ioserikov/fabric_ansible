@@ -22,16 +22,10 @@
     chdir: ~/.ssh/
 
 
-#- name: clear repos
-#  apt_repository:
-#    repo: *    
-#    state: absent
-#  become: yes   
 
 
 
-
-# TODO - make diffirent repos according to linux version
+# TODO - make diffirent repos according to linux version or make in variables
 - name: add apt repos
   apt_repository:
     repo: "{{ item }}"
@@ -53,13 +47,6 @@
   become: yes
     
 
-#- name:  upgrade in scilence
-#  apt:
-#    name: "*"
-#    state: latest
-#    force_apt_get: yes
-#  become: yes  
-    
 
 
 - name: "install prerequisities:  CURL, GIT, MC"
@@ -85,25 +72,35 @@
 - name: instal GO by role
   include_role: 
     name: "{{playbook_dir}}/../roles/golang_install"
+  #vars: 
+  #    ansible_user_id: "{{ ansible_user_id }}"
+
   
+
          
+# TODO  - meke Repo in variable
+- name: git
+  git: 
+    repo: 'https://github.com/hyperledger/fabric'
+    dest:  "{{ fabric_src_dir }}"
+    version: release-"{{ fabric_release }}"
+
   
-  
-- name: copy fabric src  
-  copy:
-    src: "{{ role_path }}/files/fab.tar"
-    dest: "{{ fabric_src_dir}}"
-    backup: yes
-  become: no
+#- name: copy fabric src  
+#  copy:
+#    src: "{{ role_path }}/files/fab.tar"
+#    dest: "{{ fabric_src_dir}}"
+#    backup: yes
+#  become: no
 
 
-- unarchive:
-    src: "{{ fabric_src_dir }}/fab.tar"
-    dest: "{{ fabric_src_dir }}"
-    remote_src: yes
-  become: no  
+#- unarchive:
+#    src: "{{ fabric_src_dir }}/fab.tar"
+#    dest: "{{ fabric_src_dir }}"
+#    remote_src: yes
+# become: no  
 
-
+# TODO - make docker GPG surce in variable
 - name: add repo and gpg key for docker install
   apt_key:
     url: https://download.docker.com/linux/debian/gpg
@@ -111,7 +108,7 @@
   become: yes  
 
 
-#- name: add docker src to apt repo
+#-TODO - make docker repo in variable
 - apt_repository:
     repo: "deb [arch=amd64] https://download.docker.com/linux/debian buster stable"
     state: present

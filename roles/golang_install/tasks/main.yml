@@ -5,6 +5,8 @@
     register: go_version
     changed_when: false
  
+   
+
   - debug: msg="go_version={{go_version.stdout}}"
   - debug: msg="new_go_version={{new_go_version}}"
  
@@ -21,7 +23,7 @@
       dest: "{{home_dir}}"
       
       #mode: 0440
-     
+    become: no 
   
   - name: Remove old installation of Go
     file:
@@ -40,9 +42,6 @@
     file:
       path: "{{item}}"
       state: directory
-     # owner: "{{file_owner}}"
-     # group: "{{file_owner}}"
-     # mode: 0775
     with_items:
     - "{{home_dir}}go"
     - "{{home_dir}}go/bin"
@@ -55,16 +54,16 @@
       dest: "{{home_dir}}/.bashrc"
       block: |
         export GOPATH=$HOME/go
-        #export GOBIN=$GOPATH/bin
         export PATH=$PATH:/usr/local/go/bin
       marker: '# {mark} ANSIBLE MANAGED BLOCK - changes for golang'
       insertafter: EOF
-      create: yes 
+      create: yes
+    become: no   
 
 
   - name: export for current session
     shell: "{{ item }}"
     with_items:
-      - export GOPATH=$HOME/go
-      #- export GOBIN=$GOPATH/bin
-      - export PATH=$PATH:/usr/local/go/bin
+    - export GOPATH=$HOME/go
+    - export PATH=$PATH:/usr/local/go/bin
+    become: no  

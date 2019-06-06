@@ -1,12 +1,18 @@
 - hosts: hv
+  
+  vars_files:
+     - "{{playbook_dir}}/../globalvars/global.yml"  
+  
   tasks:
-  - name: apt update and upgrade
-    shell: apt-get update
-    become: yes
-    
-
-  - name:  upgrade in scilence
-    shell: apt-get upgrade -f 
-    become: yes 
-    
-    
+  - name: prepare dependicies for fabric binares compile
+    command: "{{ item }}"
+    #args:
+    #  chdir: "{{ fabric_src_dir }}/"  
+    with_items:
+    - cd ~/
+    - git clone https://hyperledger/fabric
+    - cd ~/fabric/
+    - go mod vendor
+    - go mod tidy
+    - go mod verify
+    become: no 

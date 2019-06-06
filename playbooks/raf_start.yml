@@ -1,7 +1,7 @@
 ## hostprep/tasks/main.yml - task for instaling all prerequisities for HLF fabric on target hosts
-- name: "  prepare hardwre hosts"
-  become: yes
-  gather_facts: no
+- name: prepare hardwre hosts
+  become: no
+  gather_facts: yes
   hosts: hv
   vars_files:
      - "{{playbook_dir}}/../globalvars/global.yml"
@@ -12,8 +12,12 @@
   # when: from_zero == "true"
 
 - name: " prepare HLF dependicies "
-  gather_facts: no
+  gather_facts: yes
   hosts: hv
+  vars_files:
+     - "{{playbook_dir}}/../globalvars/global.yml"
   roles:
-      - "{{playbook_dir}}/../roles/common"   
+      - "{{playbook_dir}}/../roles/common"  
+  tags:
+    - "utility binary and configs buildings "     
        

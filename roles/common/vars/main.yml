@@ -1,9 +1,0 @@
-# common/vars/main.yml
-
-consensus_type: raft # kafka / solo
-
-# dirs for fabric instances
-fabric_dir:  /opt/fabric
-config_dir: /opt/fabric/config
-binary_dir: /opt/fabric/bin
-msp_dir: /opt/fabric/msp
