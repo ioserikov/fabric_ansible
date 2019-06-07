@@ -11,7 +11,7 @@ fabric_src_dir: "/home/{{ username }}/fabric/"
 home_dir: "/home/{{ username }}/"
 
 
-#pubkey for hosts
+#pubkey src for hosts
 pubkey: "~/.ssh/ioserikov.pub"
 
 # github_release:
@@ -27,7 +27,7 @@ fabric_channel:  "chan"
 consensus_type: raft # kafka / solo
 
 # dirs for fabric instances
-fabric_dir:  /opt/fabric
-config_dir: /opt/fabric/config
-binary_dir: /opt/fabric/bin
-msp_dir: /opt/fabric/msp
+fabric_dir:  /usr/local/fabric/
+config_dir: /usr/local/fabric/config/
+binary_dir: /usr/local/fabric/bin/
+msp_dir: /usr/local/fabric/msp/

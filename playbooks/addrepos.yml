@@ -1,17 +1,21 @@
-- hosts: hv
-  tasks:
-  - name: copy repos
-    copy:
-     src: "{{ pathdir }}{{ src }}"
-     dest: "/etc/apt"
-     backup: yes
-    become: yes
+  #- name: try
 
-  - name: add repos from library
-    shell: cat {{ src }} > sources.list
+hosts: hv
+- name: "!!"
+    shell: "{{ item }}"
     args:
-     chdir: /etc/apt/
-    become: yes 
+      chdir: "{{ fabric_src_dir }}"
+    with_items:    
+      - /usr/local/go/bin/go get github.com/hyperledger/fabric
+      - cd {{ fabric_src_dir }}
+      - /usr/local/go/bin/go mod init
+      - /usr/local/go/bin/go mod vendor
+      - /usr/local/go/bin/go mod tidy
+      - cd {{ fabric_src_dir }}common/tools/cryptogen
+      - /usr/local/go/bin/go build
+      - cp cryptogen {{ binary_dir }}
+  become: yes 
+
    
 
 
