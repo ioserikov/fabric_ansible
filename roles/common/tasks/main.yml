@@ -11,7 +11,7 @@
   file:
     path: '{{ item }}'
     state: directory
-    mode: 40775
+    mode: 40777
    # owner: '{{ username }}'
   with_items:
     - '{{ fabric_dir }}'
@@ -21,8 +21,13 @@
   become: yes  
 
 
-
+# tODO - fix go env from noroot to root context: PATH, GOPATH, GOROOT, GOMOD
   
+- name: save environ facts for future go build as root 
+  setup:
+  become: no
+
+    
 
 - name: generate cryptogen bin for hosts from src
   shell: "{{ item }}"
@@ -32,12 +37,9 @@
     
     - cd {{ fabric_src_dir }}
     - go mod init
-   # - go mod vendor
-   # - go mod tidy
     - cd {{ fabric_src_dir }}
     - go build -o {{ fabric_src_dir }}cryptogen -i {{ fabric_src_dir }}common/tools/cryptogen/main.go
     - cp {{ fabric_src_dir }}cryptogen {{ binary_dir }}
-    - chmod 777 {{ binary_dir }}* 
   become: yes
   ignore_errors: True
   environment:
@@ -49,9 +51,32 @@
 
 
 
+- name: transfer cryptoconfig template
+  template:
+      dest: undefined # required. Location to render the template to on the remote machine.
+      src: undefined # required. Path of a Jinja2 formatted template on the Ansible controller. This can be a relative or absolute path.
+      force: yes 
+      output_encoding: utf-8 
+      backup: yes
 
-#- name: Generate crypto-config templates
-#  template:
-#    src: 
-#    dest: 
-#    backup: yes
+
+- name: generate configtxgen bin for hosts from src
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ fabric_src_dir }}"
+  with_items:    
+    - cd {{ fabric_src_dir }}
+    - go mod init
+    - cd {{ fabric_src_dir }}
+    - go build -o {{ fabric_src_dir }}configtxgen -i {{ fabric_src_dir }}common/tools/cryptogen/main.go
+    - cp {{ fabric_src_dir }}configtxgen {{ binary_dir }}
+  become: yes
+  ignore_errors: True
+  environment:
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: /home/laborant/go
+    GOMOD: /home/laborant/fabric/go.mod
+    GOROOT: /usr/local/go
+
+
+

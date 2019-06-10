@@ -1,0 +1,39 @@
+###
+OrdererOrgs:
+  - Name: Orderer
+    Domain: lab.stoloto.su
+    Specs:
+      - Hostname: lab-fab-orderer0
+      - Hostname: lab-fab-orderer1
+      - Hostname: lab-fab-orderer2
+      - Hostname: lab-fab-orderer3
+      - Hostname: lab-fab-orderer4
+    CA:
+      Country: RU
+      Province: Moscow
+      Locality: Moscow
+      OrganizationalUnit: StolotoFabricOrderer
+      StreetAddress: 43,bldg 3, Volgogradsky ave., Moscow
+      PostalCode: 109316
+
+PeerOrgs:
+  - Name: Stoloto
+    Domain: lab.stoloto.su
+    # https://stackoverflow.com/questions/49924937/meaning-of-enablenodeous-in-crypto-config-yaml
+    EnableNodeOUs: true
+    Template:
+      Count: 10
+      # Start: 5
+      Hostname: 
+    Users:
+      Count: 10
+    CA:
+      # Hostname: ca # implicitly ca.org1.example.com
+      Country: RU
+      Province: Moscow
+      Locality: Moscow
+      OrganizationalUnit: StolotoFabricPeer
+      StreetAddress: 43,bldg 3, Volgogradsky ave., Moscow
+      PostalCode: 109316
+
+#####
