@@ -23,9 +23,9 @@
 
 # tODO - fix go env from noroot to root context: PATH, GOPATH, GOROOT, GOMOD
   
-- name: save environ facts for future go build as root 
-  setup:
-  become: no
+#- name: save environ facts for future go build as root 
+#  setup:
+#  become: no
 
     
 
@@ -51,13 +51,6 @@
 
 
 
-- name: transfer cryptoconfig template
-  template:
-      dest: undefined # required. Location to render the template to on the remote machine.
-      src: undefined # required. Path of a Jinja2 formatted template on the Ansible controller. This can be a relative or absolute path.
-      force: yes 
-      output_encoding: utf-8 
-      backup: yes
 
 
 - name: generate configtxgen bin for hosts from src
@@ -77,6 +70,13 @@
     GOPATH: /home/laborant/go
     GOMOD: /home/laborant/fabric/go.mod
     GOROOT: /usr/local/go
+
+
+- name: CA for one node
+  hosts: inc-hv01
+
+
+
 
 
 

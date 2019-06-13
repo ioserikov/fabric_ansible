@@ -3,11 +3,11 @@ OrdererOrgs:
   - Name: Orderer
     Domain: lab.stoloto.su
     Specs:
-      - Hostname: lab-fab-orderer0
-      - Hostname: lab-fab-orderer1
-      - Hostname: lab-fab-orderer2
-      - Hostname: lab-fab-orderer3
-      - Hostname: lab-fab-orderer4
+      - Hostname: {{         
+      }}    #  - Hostname: lab-fab-orderer1
+    #  - Hostname: lab-fab-orderer2
+     # - Hostname: lab-fab-orderer3
+     # - Hostname: lab-fab-orderer4
     CA:
       Country: RU
       Province: Moscow
