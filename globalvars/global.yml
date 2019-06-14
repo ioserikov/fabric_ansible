@@ -8,7 +8,9 @@ username: "{{ ansible_user_id }}"
 
 golang_dir: "/home/{{ username }}/go/"
 fabric_src_dir: "/home/{{ username }}/fabric/"
+
 home_dir: "/home/{{ username }}/"
+fabric_ca_src_dir: "/home/{{ username }}/fabric_ca/"
 
 
 #pubkey src for hosts
@@ -31,3 +33,4 @@ fabric_dir:  /usr/local/fabric/
 config_dir: /usr/local/fabric/config/
 binary_dir: /usr/local/fabric/bin/
 msp_dir: /usr/local/fabric/msp/
+fabric_ca_dir: /usr/local/fabric/fabric-ca/

@@ -1,0 +1,25 @@
+###  roles/fabric_ca/tasks/main.yml file
+
+
+---
+- name: build fabric_ca_server binary
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ fabric_ca_src_dir }}"
+  with_items:    
+    - go get  github.com/hyperledger/fabric-ca
+    - make fabric-ca-server
+    - cp {{ fabric_ca_src_dir }}bin/fabric-ca-server {{ fabric_ca_dir }}
+    
+    #- cd {{ fabric_src_dir }}
+    #- go mod init
+    #- cd {{ fabric_src_dir }}
+    #- go build -o {{ home_dir }}fabric_ca  {{ home_dir }}fabric_ca/cmd/fabric-ca-server/main.go
+    #- cp {{ fabric_src_dir }}cryptogen {{ binary_dir }}
+  become: no
+  ignore_errors: True
+  environment:
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: /home/laborant/go
+    GOMOD: /home/laborant/fabric/go.mod
+    GOROOT: /usr/local/go

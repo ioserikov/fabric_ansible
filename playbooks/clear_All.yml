@@ -12,6 +12,8 @@
       - "{{ golang_dir }}"
       - "{{ fabric_src_dir }}"
       - "{{ fabric_dir }}"
+      -  /usr/local/go
+      -  "{{ fabric_ca_src_dir }}"
     become: yes
 
 

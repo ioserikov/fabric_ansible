@@ -5,12 +5,19 @@
   
   tasks:
   - name: change permissions
+    
     file:
-      path: "{{ fabric_dir }}"
+      path: '{{ item }}'
       state: directory
+      mode: 42775
       recurse: yes
-      owner: "{{ username}}"
-      mode: 40777
+      
+   # owner: '{{ username }}'
+    with_items:
+    - '{{ fabric_dir }}'
+    - '{{ binary_dir }} '     
+    - '{{ msp_dir }}' 
+    - '{{ config_dir }}'
+    - '/usr/local/go'
     become: yes  
-
 

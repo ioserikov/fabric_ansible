@@ -1,23 +1,26 @@
 
 
 ---
-#- shell: mkdir -p '{{ fabric_dir }}' '{{ config_dir }}' '{{ binary_dir }}' '{{ msp_dir }}'
-#  args:
-#    warn: no
-#  become: yes
+- shell: mkdir -p '{{ fabric_dir }}' '{{ config_dir }}' '{{ binary_dir }}' '{{ msp_dir }}' '{{fabric_ca_dir }}'
+  args:
+    warn: no
+  become: yes
    
 
-- name: create dirs
+- name: chmod for our dirs
   file:
     path: '{{ item }}'
     state: directory
-    mode: 40777
+    mode: 42775
+    recurse: yes
    # owner: '{{ username }}'
   with_items:
     - '{{ fabric_dir }}'
-    - '{{ binary_dir }} '     
-    - '{{ msp_dir }}'
+    - '{{ binary_dir }}'     
+    - '{{ msp_dir }}' 
     - '{{ config_dir }}'
+    - '{{ fabric_ca_dir }}'
+    #- '/usr/local/go'
   become: yes  
 
 
@@ -34,22 +37,18 @@
   args:
     chdir: "{{ fabric_src_dir }}"
   with_items:    
-    
     - cd {{ fabric_src_dir }}
     - go mod init
-    - cd {{ fabric_src_dir }}
-    - go build -o {{ fabric_src_dir }}cryptogen -i {{ fabric_src_dir }}common/tools/cryptogen/main.go
+    - go mod tidy
+    - go build -o {{ fabric_src_dir }}cryptogen  {{ fabric_src_dir }}common/tools/cryptogen/main.go
     - cp {{ fabric_src_dir }}cryptogen {{ binary_dir }}
-  become: yes
+  become: no
   ignore_errors: True
   environment:
     PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
     GOPATH: /home/laborant/go
     GOMOD: /home/laborant/fabric/go.mod
     GOROOT: /usr/local/go
-
-
-
 
 
 
@@ -57,13 +56,14 @@
   shell: "{{ item }}"
   args:
     chdir: "{{ fabric_src_dir }}"
-  with_items:    
+  with_items:  
+    - go get github.com/hyperledger/fabric-ca 
     - cd {{ fabric_src_dir }}
     - go mod init
     - cd {{ fabric_src_dir }}
-    - go build -o {{ fabric_src_dir }}configtxgen -i {{ fabric_src_dir }}common/tools/cryptogen/main.go
+    - go build -o {{ fabric_src_dir }}configtxgen  {{ fabric_src_dir }}common/tools/cryptogen/main.go
     - cp {{ fabric_src_dir }}configtxgen {{ binary_dir }}
-  become: yes
+  become: no
   ignore_errors: True
   environment:
     PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
@@ -71,9 +71,6 @@
     GOMOD: /home/laborant/fabric/go.mod
     GOROOT: /usr/local/go
 
-
-- name: CA for one node
-  hosts: inc-hv01
 
 
 
