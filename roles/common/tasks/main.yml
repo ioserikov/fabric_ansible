@@ -57,9 +57,7 @@
   args:
     chdir: "{{ fabric_src_dir }}"
   with_items:  
-    - go get github.com/hyperledger/fabric-ca 
     - cd {{ fabric_src_dir }}
-    - go mod init
     - cd {{ fabric_src_dir }}
     - go build -o {{ fabric_src_dir }}configtxgen  {{ fabric_src_dir }}common/tools/cryptogen/main.go
     - cp {{ fabric_src_dir }}configtxgen {{ binary_dir }}

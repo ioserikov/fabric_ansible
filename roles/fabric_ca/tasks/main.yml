@@ -3,6 +3,7 @@
 
 ---
 - name: build fabric_ca_server binary
+  hosts: fabric_ca_host
   shell: "{{ item }}"
   args:
     chdir: "{{ fabric_ca_src_dir }}"
@@ -10,12 +11,23 @@
     - go get  github.com/hyperledger/fabric-ca
     - make fabric-ca-server
     - cp {{ fabric_ca_src_dir }}bin/fabric-ca-server {{ fabric_ca_dir }}
-    
-    #- cd {{ fabric_src_dir }}
-    #- go mod init
-    #- cd {{ fabric_src_dir }}
-    #- go build -o {{ home_dir }}fabric_ca  {{ home_dir }}fabric_ca/cmd/fabric-ca-server/main.go
-    #- cp {{ fabric_src_dir }}cryptogen {{ binary_dir }}
+  become: no
+  ignore_errors: True
+  environment:
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: /home/laborant/go
+    GOMOD: /home/laborant/fabric/go.mod
+    GOROOT: /usr/local/go  
+
+
+- name: build fabric_ca_client binary
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ fabric_ca_src_dir }}"
+  with_items:    
+    - go get  github.com/hyperledger/fabric-ca
+    - make fabric-ca-client
+    - cp {{ fabric_ca_src_dir }}bin/fabric-ca-client {{ fabric_ca_dir }}
   become: no
   ignore_errors: True
   environment:
@@ -23,3 +35,14 @@
     GOPATH: /home/laborant/go
     GOMOD: /home/laborant/fabric/go.mod
     GOROOT: /usr/local/go
+
+- name: translate fabric-ca config file to run
+  template:
+      dest: "{{ fabric_ca_dir }}fabric-ca-server-config.yaml"
+      src: undefined #his can be a relative or absolute path.
+      force: yes # not required. the default is C(yes), which will replace the remote file when contents are different than the source.  If C(no), the file will only be transferred if the destination does not exist.
+      follow: no # not required. This flag indicates that filesystem links in the destination, if they exist, should be followed.,Previous to Ansible 2.4, this was hardcoded as C(yes).
+      unsafe_writes: no 
+      backup: yes # 
+  register: fabric_ca config
+

@@ -5,4 +5,7 @@ all:
     hv:
       hosts:
         inc-hv0[1:3]:
+  fabric_ca_host:
+    inc-hv01:
+          
              

@@ -1,0 +1,5 @@
+## roles/fabric_ca/vars/main.yaml  
+
+# host for maintaining fabric-ca:  lets first  from our hosts
+
+fabric_ca_host: inc-hv01

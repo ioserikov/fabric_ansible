@@ -34,3 +34,5 @@ config_dir: /usr/local/fabric/config/
 binary_dir: /usr/local/fabric/bin/
 msp_dir: /usr/local/fabric/msp/
 fabric_ca_dir: /usr/local/fabric/fabric-ca/
+
+# hosts for diffirent roles
