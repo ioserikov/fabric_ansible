@@ -36,3 +36,10 @@ msp_dir: /usr/local/fabric/msp/
 fabric_ca_dir: /usr/local/fabric/fabric-ca/
 
 # hosts for diffirent roles
+
+#fabric_ca_host: inc-hv01
+#fabric_ca_port: 7054
+#ca_server_name: "stoloto ca"
+#fabric_ca_csr_cn: "stoloto-ca-server"
+#fabric_ca_operations_listenaddress: 127.0.0.1:9443   # usage ip:port
+

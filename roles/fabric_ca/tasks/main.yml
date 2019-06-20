@@ -41,8 +41,15 @@
   template:
       dest: "{{ fabric_ca_dir }}fabric-ca-server-config.yaml"
       src: "files/fabric-ca-server-config.yaml.j2"
-      force: yes # not required. the default is C(yes), which will replace the remote file when contents are different than the source.  If C(no), the file will only be transferred if the destination does not exist.
+      force: yes 
       unsafe_writes: no 
-      backup: yes # 
-  register: fabric_ca config
+      backup: yes  
+  register: fabric_ca_config_file
+
+
+#- name: run fabric-ca server
+#  shell:
+
+
+
 

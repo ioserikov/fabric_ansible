@@ -40,7 +40,7 @@
 version: 1.4.2-snapshot-4289522
 
 # Server's listening port (default: 7054)
-port: 7054
+port: {{fabric_ca_port}}
 
 # Cross-Origin Resource Sharing (CORS)
 cors:
@@ -84,7 +84,7 @@ tls:
 #  should be trusted for this CA, where the 1st in the chain is always the
 #  root CA certificate.
 #############################################################################
-ca:
+ca: {{ca_server_name}}
   # Name of this CA
   name:
   # Key file (is only used to import a private key into BCCSP)
@@ -129,7 +129,7 @@ registry:
 
   # Contains identity information which is used when LDAP is disabled
   identities:
-     - name: amin
+     - name: admin
        pass: pass
        type: client
        affiliation: ""
@@ -307,16 +307,16 @@ signing:
 #     CA certificates though it can still issue end entity certificates.
 ###########################################################################
 csr:
-   cn: fabric-ca-server
+   cn: {{fabric_ca_csr_cn}}
    keyrequest:
      algo: ecdsa
      size: 256
    names:
-      - C: US
-        ST: "North Carolina"
-        L:
-        O: Hyperledger
-        OU: Fabric
+      - C: RU
+        ST: 
+        L: Moscow
+        O: Stoloto
+        OU: Incubator
    hosts:
      - inc-hv01
      - localhost
@@ -457,7 +457,7 @@ cfg:
 ###############################################################################
 operations:
     # host and port for the operations server
-    listenAddress: 127.0.0.1:9443
+    listenAddress: {{fabric_ca_operations_listenaddress}}
 
     # TLS configuration for the operations endpoint
     tls:
@@ -486,7 +486,7 @@ operations:
 ###############################################################################
 metrics:
     # statsd, prometheus, or disabled
-    provider: disabled
+    provider: prometheus
 
     # statsd configuration
     statsd:
