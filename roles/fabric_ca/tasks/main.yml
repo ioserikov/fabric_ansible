@@ -2,8 +2,9 @@
 
 
 ---
+#hosts: fabric_ca_host 
+
 - name: build fabric_ca_server binary
-  hosts: fabric_ca_host
   shell: "{{ item }}"
   args:
     chdir: "{{ fabric_ca_src_dir }}"
@@ -39,9 +40,8 @@
 - name: translate fabric-ca config file to run
   template:
       dest: "{{ fabric_ca_dir }}fabric-ca-server-config.yaml"
-      src: undefined #his can be a relative or absolute path.
+      src: "files/fabric-ca-server-config.yaml.j2"
       force: yes # not required. the default is C(yes), which will replace the remote file when contents are different than the source.  If C(no), the file will only be transferred if the destination does not exist.
-      follow: no # not required. This flag indicates that filesystem links in the destination, if they exist, should be followed.,Previous to Ansible 2.4, this was hardcoded as C(yes).
       unsafe_writes: no 
       backup: yes # 
   register: fabric_ca config
