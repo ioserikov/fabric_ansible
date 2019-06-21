@@ -52,7 +52,7 @@
 
 - name: "install prerequisities:  CURL, GIT, MC"
   apt:
-    name: ['curl', 'mc', 'apt-transport-https', 'git', 'qemu', 'libtool' , 'libltdl-dev']
+    name: ['curl', 'mc', 'apt-transport-https', 'git', 'qemu', 'libtool' , 'libltdl-dev', 'htop']
     state: latest
     force_apt_get: yes
   become: yes
@@ -87,13 +87,6 @@
     version: release-"{{ fabric_release }}"
   become: no
 
-
-- name: git fabric_ca
-  git:
-    repo: 'https://github.com/hyperledger/fabric-ca'
-    dest: "{{ home_dir }}fabric_ca"
-    version: release-"{{ fabric_release }}"
-  become: no      
 
   
 #- name: copy fabric src  

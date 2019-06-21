@@ -1,0 +1,1 @@
+ansible-playbook -u laborant  --ask-pass -i inventory/inventory.yml playbooks/keydeploy.yml --extra-vars '{"pubkey":"ioserikov.pub", "username":"laborant", "pathdir":"~/.ssh/"}'

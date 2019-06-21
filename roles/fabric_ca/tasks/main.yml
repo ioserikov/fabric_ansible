@@ -4,6 +4,44 @@
 ---
 #hosts: fabric_ca_host 
 
+- name: git fabric_ca
+  git:
+    repo: 'https://github.com/hyperledger/fabric-ca'
+    dest: "{{ home_dir }}fabric_ca"
+    version: release-"{{ fabric_release }}"
+  become: no
+        
+
+- name: stop fabric-ca service
+  ignore_errors: true
+  systemd:  
+    name: fabric-ca-server
+    state: stopped
+    daemon_reload: yes
+    enabled: yes
+  become: yes  
+
+
+- shell: mkdir -p '{{ fabric_ca_dir }}'  
+  args:
+    warn: no
+  become: yes
+   
+
+- name: chmod for our dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: 42775
+    recurse: yes
+   # owner: '{{ username }}'
+  with_items:
+    - '{{ fabric_ca_dir }}'
+  become: yes  
+
+
+
+
 - name: build fabric_ca_server binary
   shell: "{{ item }}"
   args:
@@ -43,12 +81,27 @@
       src: "files/fabric-ca-server-config.yaml.j2"
       force: yes 
       unsafe_writes: no 
-      backup: yes  
-  register: fabric_ca_config_file
+      backup: no  
+  
 
 
-#- name: run fabric-ca server
-#  shell:
+
+- name: transfer systemd .service init file
+  template:
+    dest: "/etc/systemd/system/fabric-ca-server.service"
+    src: "files/fabric-ca-server.service.j2"
+  become: yes  
+
+
+- name: run fabric-ca server
+  ignore_errors: true
+  systemd:  
+    name: fabric-ca-server
+    state: started
+    daemon_reload: yes
+    enabled: yes
+    no_block: yes
+  become: yes  
 
 
 

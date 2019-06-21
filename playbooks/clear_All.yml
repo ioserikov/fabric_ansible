@@ -16,9 +16,22 @@
       -  "{{ fabric_ca_src_dir }}"
     become: yes
 
+  
+- hosts:  fabric_ca_host
+  vars_files:
+     - "{{playbook_dir}}/../globalvars/global.yml"
+  tasks:
 
-  #- name: git
-  #  git: 
-  #    repo: 'https://github.com/hyperledger/fabric'
-  #    dest:  "{{ fabric_src_dir }}"
-  #    version: release-"{{ fabric_release }}"
+  - name: stop fabric-ca service
+    ignore_errors: true
+    systemd:
+      name: fabric-ca-server
+      state: stopped
+      daemon_reload: yes
+      enabled: yes
+    become: yes    
+    
+
+    
+
+  

@@ -84,9 +84,9 @@ tls:
 #  should be trusted for this CA, where the 1st in the chain is always the
 #  root CA certificate.
 #############################################################################
-ca: {{ca_server_name}}
+ca: 
   # Name of this CA
-  name:
+  name: {{ca_server_name}}
   # Key file (is only used to import a private key into BCCSP)
   keyfile:
   # Certificate file (default: ca-cert.pem)
