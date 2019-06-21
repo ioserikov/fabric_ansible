@@ -1,0 +1,8 @@
+## roles/cryptogen/tasks/main/yml
+
+
+
+- name: translate crypto material
+  template:
+
+  
