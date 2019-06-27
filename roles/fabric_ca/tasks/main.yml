@@ -1,0 +1,108 @@
+###  roles/fabric_ca/tasks/main.yml file
+
+
+---
+#hosts: fabric_ca_host 
+
+- name: git fabric_ca
+  git:
+    repo: 'https://github.com/hyperledger/fabric-ca'
+    dest: "{{ home_dir }}fabric_ca"
+    version: release-"{{ fabric_release }}"
+  become: no
+        
+
+- name: stop fabric-ca service
+  ignore_errors: true
+  systemd:  
+    name: fabric-ca-server
+    state: stopped
+    daemon_reload: yes
+    enabled: yes
+  become: yes  
+
+
+- shell: mkdir -p '{{ fabric_ca_dir }}'  
+  args:
+    warn: no
+  become: yes
+   
+
+- name: chmod for our dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: 42775
+    recurse: yes
+   # owner: '{{ username }}'
+  with_items:
+    - '{{ fabric_ca_dir }}'
+  become: yes  
+
+
+
+
+- name: build fabric_ca_server binary
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ fabric_ca_src_dir }}"
+  with_items:    
+    - go get  github.com/hyperledger/fabric-ca
+    - make fabric-ca-server
+    - cp {{ fabric_ca_src_dir }}bin/fabric-ca-server {{ fabric_ca_dir }}
+  become: no
+  ignore_errors: True
+  environment:
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: /home/laborant/go
+    GOMOD: /home/laborant/fabric/go.mod
+    GOROOT: /usr/local/go  
+
+
+- name: build fabric_ca_client binary
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ fabric_ca_src_dir }}"
+  with_items:    
+    - go get  github.com/hyperledger/fabric-ca
+    - make fabric-ca-client
+    - cp {{ fabric_ca_src_dir }}bin/fabric-ca-client {{ fabric_ca_dir }}
+  become: no
+  ignore_errors: True
+  environment:
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: /home/laborant/go
+    GOMOD: /home/laborant/fabric/go.mod
+    GOROOT: /usr/local/go
+
+- name: translate fabric-ca config file to run
+  template:
+      dest: "{{ fabric_ca_dir }}fabric-ca-server-config.yaml"
+      src: "files/fabric-ca-server-config.yaml.j2"
+      force: yes 
+      unsafe_writes: no 
+      backup: no  
+  
+
+
+
+- name: transfer systemd .service init file
+  template:
+    dest: "/etc/systemd/system/fabric-ca-server.service"
+    src: "files/fabric-ca-server.service.j2"
+  become: yes  
+
+
+- name: run fabric-ca server
+  ignore_errors: true
+  systemd:  
+    name: fabric-ca-server
+    state: started
+    daemon_reload: yes
+    enabled: yes
+    no_block: yes
+  become: yes  
+
+
+
+

@@ -1,0 +1,67 @@
+## rolel/common/tasks/main.ynl
+---
+- shell: mkdir -p '{{ fabric_dir }}' '{{ config_dir }}' '{{ binary_dir }}' '{{ msp_dir }}' 
+  args:
+    warn: no
+  become: yes
+   
+
+- name: chmod for our dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: 42775
+    recurse: yes
+   # owner: '{{ username }}'
+  with_items:
+    - '{{ fabric_dir }}'
+    - '{{ binary_dir }}'     
+    - '{{ msp_dir }}' 
+    - '{{ config_dir }}'
+    #- '/usr/local/go'
+  become: yes  
+    
+
+- name: generate cryptogen bin for hosts from src
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ fabric_src_dir }}"
+  with_items:    
+    - cd {{ fabric_src_dir }}
+    - go mod init
+    - go mod tidy
+    - go build -o {{ fabric_src_dir }}cryptogen  {{ fabric_src_dir }}common/tools/cryptogen/main.go
+    - cp {{ fabric_src_dir }}cryptogen {{ binary_dir }}
+  become: no
+  ignore_errors: True
+  environment:
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: /home/laborant/go
+    GOMOD: /home/laborant/fabric/go.mod
+    GOROOT: /usr/local/go
+
+
+
+- name: generate configtxgen bin for hosts from src
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ fabric_src_dir }}"
+  with_items:  
+    - cd {{ fabric_src_dir }}
+    - cd {{ fabric_src_dir }}
+    - go build -o {{ fabric_src_dir }}configtxgen  {{ fabric_src_dir }}common/tools/cryptogen/main.go
+    - cp {{ fabric_src_dir }}configtxgen {{ binary_dir }}
+  become: no
+  ignore_errors: True
+  environment:
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: /home/laborant/go
+    GOMOD: /home/laborant/fabric/go.mod
+    GOROOT: /usr/local/go
+
+
+
+
+
+
+

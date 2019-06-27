@@ -1,0 +1,6 @@
+- name: gplang install
+  
+  hosts: hv
+  roles:
+    - role: "{{playbook_dir}}/../roles/golang_install"
+  become: no

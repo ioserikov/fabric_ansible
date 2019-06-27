@@ -1,0 +1,13 @@
+
+
+- name: " prepare HLF dependicies "
+  gather_facts: yes
+  hosts: fabric_ca_host
+  
+  vars_files:
+     - "{{playbook_dir}}/../globalvars/global.yml"
+  roles:
+      - "{{playbook_dir}}/../roles/fabric_ca"  
+  tags:
+    - "fabric ca role "     
+       

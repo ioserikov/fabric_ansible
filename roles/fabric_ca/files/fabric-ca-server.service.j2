@@ -1,0 +1,32 @@
+[Unit]
+Description= CA server for Hyperledger Fabric
+#Requires=docker.service
+#After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory={{ fabric_ca_dir }}
+ExecStart={{fabric_ca_dir}}fabric-ca-server start
+#ExecStop={{fabric_ca_dir}}fabric-ca-server stop
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
+
+#[Unit]
+#Description= 
+#Requires=d
+#After=docker.service
+
+#[Service]
+#WorkingDirectory=/mnt/fabric
+#ExecStart=/usr/local/bin/docker-compose up -f /mnt/fabric/docker-compose-node.yml
+#ExecStop=/usr/local/bin/docker-compose down -f /mnt/fabric/docker-compose-node.yml
+#TimeoutStartSec=0
+#Restart=on-failure
+#StartLimitIntervalSec=60
+#StartLimitBurst=3
+
+#[Install]
+#WantedBy=multi-user.target

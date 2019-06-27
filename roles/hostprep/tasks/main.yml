@@ -1,0 +1,140 @@
+#####  /roles/hostprep/tasks/main/yml 
+#main of host prepare tasks
+# we copy src and install from apt and src:  Curl, Docker,Docker-Compose, Fabric, golang
+
+---
+- name: create dir for ssh key
+  file:
+    path: "~/.ssh"
+    state: directory
+   
+
+- name: copy public key to destination
+  copy:
+   src: "{{ pubkey }}"
+   dest: ~/.ssh/
+   mode: u=rw,g=r,o=rw
+   backup: yes
+    
+
+- name: remote add key to authorized keys
+  shell: cat {{ pubkey }} > authorized_keys
+  args:
+    chdir: ~/.ssh/
+
+
+
+
+
+# TODO - make diffirent repos according to linux version or make in variables
+- name: add apt repos
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    #update: yes
+  with_items:
+      - deb http://gate-apt-proxy.tsed.orglot.office/debian buster main contrib non-free
+      - deb-src http://gate-apt-proxy.tsed.orglot.office/debian buster main contrib non-free
+      - deb http://gate-apt-proxy.tsed.orglot.office/debian buster-updates main contrib non-free
+      - deb-src http://gate-apt-proxy.tsed.orglot.office/debian buster-updates main contrib non-free
+  become: yes  
+        
+
+   
+- name: update cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+  become: yes
+    
+
+
+
+- name: "install prerequisities:  CURL, GIT, MC"
+  apt:
+    name: ['curl', 'mc', 'apt-transport-https', 'git', 'qemu', 'libtool' , 'libltdl-dev', 'htop']
+    state: latest
+    force_apt_get: yes
+  become: yes
+  
+
+- name: git config for fabric
+  git_config:
+    name: core.autocrlf
+    scope: global
+    value: "false"
+
+- git_config:
+    name: core.longpaths
+    scope: global
+    value: "true"    
+
+
+- name: instal GO by role
+  include_role: 
+    name: "{{playbook_dir}}/../roles/golang_install"
+  #vars: 
+  #    ansible_user_id: "{{ ansible_user_id }}"
+
+  
+
+         
+# TODO  - make Repo in variable and use local repos
+- name: git
+  git: 
+    repo: 'https://github.com/hyperledger/fabric'
+    dest:  "{{ fabric_src_dir }}"
+    version: release-"{{ fabric_release }}"
+  become: no
+
+
+  
+#- name: copy fabric src  
+#  copy:
+#    src: "{{ role_path }}/files/fab.tar"
+#    dest: "{{ fabric_src_dir}}"
+#    backup: yes
+#  become: no
+
+
+#- unarchive:
+#    src: "{{ fabric_src_dir }}/fab.tar"
+#    dest: "{{ fabric_src_dir }}"
+#    remote_src: yes
+# become: no  
+
+# TODO - make docker GPG surce in variable
+- name: add repo and gpg key for docker install
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present  
+  become: yes  
+
+
+#-TODO - make docker repo in variable
+- apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian buster stable"
+    state: present
+    update_cache: yes
+  become: yes    
+  
+  
+#- name: install docker repos
+- apt:
+    name: 
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io 
+    state: latest
+    force_apt_get: yes
+  become: yes 
+
+
+#- name: install docker composer by curl
+- shell: curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  args:
+     warn: no
+  become: yes
+
+
+
