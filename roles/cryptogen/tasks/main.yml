@@ -1,8 +1,27 @@
 ## roles/cryptogen/tasks/main/yml
+## we use ctyptogen binary tool for stand but it is neccessary to use accurate security policy for real implements
 
 
-
-- name: translate crypto material
+- name: translate crypto template
   template:
+    src: "files/crypto-config.yml.j2"
+    dest: "{{ binary_dir }}crypto-config.yml"
+  become: no
 
-  
+
+    
+## generate all keys/certs for msp
+
+# cacert - from fabric CA
+- name : generate certs from Root CA
+  opens
+
+
+- name: generate admin cert for our network
+
+
+- name: generate some user cets (testing)
+
+
+- name: generate peer/orderer certs 
+

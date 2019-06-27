@@ -86,6 +86,10 @@
 
 
 
+
+
+
+
 - name: transfer systemd .service init file
   template:
     dest: "/etc/systemd/system/fabric-ca-server.service"
@@ -93,7 +97,8 @@
   become: yes  
 
 
-- name: run fabric-ca server
+
+- name: run fabric-ca server with our config
   ignore_errors: true
   systemd:  
     name: fabric-ca-server
@@ -102,6 +107,9 @@
     enabled: yes
     no_block: yes
   become: yes  
+
+
+- name:   
 
 
 

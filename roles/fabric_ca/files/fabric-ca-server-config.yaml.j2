@@ -88,9 +88,9 @@ ca:
   # Name of this CA
   name: {{ca_server_name}}
   # Key file (is only used to import a private key into BCCSP)
-  keyfile:
+  keyfile:  ca_sk
   # Certificate file (default: ca-cert.pem)
-  certfile:
+  certfile:  ca.pem
   # Chain file
   chainfile:
 
@@ -359,7 +359,7 @@ bccsp:
         security: 256
         filekeystore:
             # The directory used for the software file-based keystore
-            keystore: msp/keystore
+            keystore: {{ keystore }}
 
 #############################################################################
 # Multi CA section
