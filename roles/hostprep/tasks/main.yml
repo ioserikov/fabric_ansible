@@ -17,7 +17,6 @@
   apt_repository:
     repo: "{{ item }}"
     state: present
-   
   with_items:
     - deb-src http://security.debian.org/debian-security/ buster/updates main
     - deb http://security.debian.org/debian-security/ buster/updates main
@@ -36,7 +35,7 @@
     autoclean: yes
     allow_unauthenticated: yes
     upgrade: yes
-    #force_apt_get: yes
+    force_apt_get: yes
   become: yes
 
 
@@ -75,7 +74,7 @@
 # TODO  - make Repo in variable and use local repos
 - name: git
   git: 
-    repo: 'https://gerrit.hyperledger.org/r/fabric'
+    repo: 'https://github.com/hyperledger/fabric'
     dest:  "{{ fabric_src_dir }}"
     version: release-"{{ fabric_release }}"
   become: no

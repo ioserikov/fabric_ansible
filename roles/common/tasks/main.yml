@@ -39,6 +39,7 @@
     GOPATH: /home/laborant/go
     GOMOD: /home/laborant/fabric/go.mod
     GOROOT: /usr/local/go
+    GOBIN: /usr/local/go/bin
 
 
 

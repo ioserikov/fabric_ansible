@@ -4,7 +4,8 @@
      - "{{playbook_dir}}/../globalvars/global.yml"
   tasks:
 
-  - name: clear 
+    #TODO - make clear managable by config
+  - name: clear all footrpints
     file: 
       path: "{{ item }}"
       state: absent
@@ -13,15 +14,14 @@
       - "{{ fabric_src_dir }}"
       - "{{ fabric_dir }}"
       -  /usr/local/go
-      -  "{{ fabric_ca_src_dir }}"
+      - "{{ fabric_ca_src_dir }}"
       - "{{ home_dir }}.ansible/tmp"
-      - "{{ home_dir }}go-build"
-      - "/etc/apt/repo*"
-  
+      - "{{ home_dir }}.cache/go-build"
+       
     become: yes
 
-  
-  
+    
+    
 
 
 - hosts:  fabric_ca_host

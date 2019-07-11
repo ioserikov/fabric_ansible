@@ -21,7 +21,7 @@
     enabled: yes
   become: yes  
 
-
+#TODO - make be file module, not by shell
 - shell: mkdir -p '{{ fabric_ca_dir }}'  
   args:
     warn: no
@@ -37,6 +37,7 @@
    # owner: '{{ username }}'
   with_items:
     - '{{ fabric_ca_dir }}'
+    - '{{ keystore }}'
   become: yes  
 
 
@@ -81,7 +82,7 @@
       src: "files/fabric-ca-server-config.yaml.j2"
       force: yes 
       unsafe_writes: no 
-      backup: no  
+      backup: yes  
   
 
 

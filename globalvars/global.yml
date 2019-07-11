@@ -14,7 +14,7 @@ fabric_ca_src_dir: "/home/{{ username }}/fabric_ca/"
 pubkey: "~/.ssh/ioserikov.pub"
 
 # github_release:
-new_go_version: 1.11.10
+new_go_version: 1.11.12
 fabric_release: 1.4
 fabric_ca_release: 1.4
 
@@ -31,13 +31,17 @@ fabric_dir:  /usr/local/fabric/
 config_dir: /usr/local/fabric/config/
 binary_dir: /usr/local/fabric/bin/
 msp_dir: /usr/local/fabric/msp/
-fabric_ca_dir: /usr/local/fabric/fabric-ca/
+
 
 # hosts for diffirent roles
 
 #fabric_ca vars 
-
+fabric_ca_dir: /usr/local/fabric/fabric-ca/
+keystore: "{{ fabric_ca_dir}}keystore"
 # other  - look at /roles/fabric_ca/vars/maim.yml
+
+
+
 
 
 
