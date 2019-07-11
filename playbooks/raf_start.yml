@@ -23,13 +23,26 @@
     - "utility binary and configs buildings " 
 
 
-- name: "generate fabric_ca server and client"
+#optional.  At production ought to use own CA
+- name: "generate and run fabric_ca server and client"
   gather_facts: no
   hosts: fabric_ca_host
   vars_files:
     - "{{playbook_dir}}/../globalvars/global.yml"
   roles:
      - "{{playbook_dir}}/../roles/fabric_ca"  
+  tags: 
+    - "fabric ca start"      
+
+
+#optional.  At production ought to use certs for principals
+- name: generate all cryptometrial 
+  gather_facts: no
+  hosts: hv
+  vars_files:
+    - "{{playbook_dir}}/../globalvars/global.yml"
+  roles:
+     - "{{playbook_dir}}/../roles/cryptogen"  
   tags: 
     - "fabric ca start"      
 

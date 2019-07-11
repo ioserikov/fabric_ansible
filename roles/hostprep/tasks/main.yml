@@ -3,56 +3,49 @@
 # we copy src and install from apt and src:  Curl, Docker,Docker-Compose, Fabric, golang
 
 ---
-- name: create dir for ssh key
-  file:
-    path: "~/.ssh"
-    state: directory
-   
-
-- name: copy public key to destination
-  copy:
-   src: "{{ pubkey }}"
-   dest: ~/.ssh/
-   mode: u=rw,g=r,o=rw
-   backup: yes
-    
-
-- name: remote add key to authorized keys
-  shell: cat {{ pubkey }} > authorized_keys
-  args:
-    chdir: ~/.ssh/
-
+## key deploy removed to be made in separate role
 
 
 
 
 # TODO - make diffirent repos according to linux version or make in variables
+-
+
+
+
 - name: add apt repos
   apt_repository:
     repo: "{{ item }}"
     state: present
-    #update: yes
+   
   with_items:
-      - deb http://gate-apt-proxy.tsed.orglot.office/debian buster main contrib non-free
-      - deb-src http://gate-apt-proxy.tsed.orglot.office/debian buster main contrib non-free
-      - deb http://gate-apt-proxy.tsed.orglot.office/debian buster-updates main contrib non-free
-      - deb-src http://gate-apt-proxy.tsed.orglot.office/debian buster-updates main contrib non-free
+    - deb-src http://security.debian.org/debian-security/ buster/updates main
+    - deb http://security.debian.org/debian-security/ buster/updates main
+    - deb http://deb.debian.org/debian/ buster-backports main 
+    - deb http://deb.debian.org/debian/ buster main 
   become: yes  
         
 
    
-- name: update cache
+- name: repo maintacne work 
   apt:
     update_cache: yes
-    force_apt_get: yes
+    force: yes
+    autoremove: yes
+    purge: yes
+    autoclean: yes
+    allow_unauthenticated: yes
+    upgrade: yes
+    #force_apt_get: yes
   become: yes
-    
 
+
+  
 
 
 - name: "install prerequisities:  CURL, GIT, MC"
   apt:
-    name: ['curl', 'mc', 'apt-transport-https', 'git', 'qemu', 'libtool' , 'libltdl-dev', 'htop']
+    name: ['curl', 'mc', 'apt-transport-https', 'git', 'qemu', 'libtool' , 'libltdl-dev', 'htop', 'openssl', 'aptitude']
     state: latest
     force_apt_get: yes
   become: yes
@@ -82,26 +75,12 @@
 # TODO  - make Repo in variable and use local repos
 - name: git
   git: 
-    repo: 'https://github.com/hyperledger/fabric'
+    repo: 'https://gerrit.hyperledger.org/r/fabric'
     dest:  "{{ fabric_src_dir }}"
     version: release-"{{ fabric_release }}"
   become: no
 
 
-  
-#- name: copy fabric src  
-#  copy:
-#    src: "{{ role_path }}/files/fab.tar"
-#    dest: "{{ fabric_src_dir}}"
-#    backup: yes
-#  become: no
-
-
-#- unarchive:
-#    src: "{{ fabric_src_dir }}/fab.tar"
-#    dest: "{{ fabric_src_dir }}"
-#    remote_src: yes
-# become: no  
 
 # TODO - make docker GPG surce in variable
 - name: add repo and gpg key for docker install

@@ -14,9 +14,16 @@
       - "{{ fabric_dir }}"
       -  /usr/local/go
       -  "{{ fabric_ca_src_dir }}"
+      - "{{ home_dir }}.ansible/tmp"
+      - "{{ home_dir }}go-build"
+      - "/etc/apt/repo*"
+  
     become: yes
 
   
+  
+
+
 - hosts:  fabric_ca_host
   vars_files:
      - "{{playbook_dir}}/../globalvars/global.yml"

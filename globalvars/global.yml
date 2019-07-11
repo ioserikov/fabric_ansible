@@ -45,3 +45,6 @@ fabric_ca_dir: /usr/local/fabric/fabric-ca/
 
 
 
+fabric_orderer_org: stoloto
+fabric_orderer_domain: 
+

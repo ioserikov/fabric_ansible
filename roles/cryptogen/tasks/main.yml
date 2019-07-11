@@ -10,18 +10,21 @@
 
 
     
+
+
+    
 ## generate all keys/certs for msp
 
 # cacert - from fabric CA
-- name : generate certs from Root CA
-  opens
+#- name : generate certs from Root CA
+#opens
 
 
-- name: generate admin cert for our network
+#- name: generate admin cert for our network
 
 
-- name: generate some user cets (testing)
+#- name: generate some user cets (testing)
 
 
-- name: generate peer/orderer certs 
+#- name: generate peer/orderer certs 
 
