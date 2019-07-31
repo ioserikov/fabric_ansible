@@ -7,8 +7,6 @@ OrdererOrgs:
       - Hostname: {{fabric_orderer_hostname_short}}0
       - Hostname: {{fabric_orderer_hostname_short}}1
       - Hostname: {{fabric_orderer_hostname_short}}2
-     #- Hostname: {{fabric_orderer_hostname_short}}3
-     # - Hostname: {{fabric_orderer_hostname_short}}4
     CA:
       Country: {{crypto_orderer_ca_c}}
       Province: {{crypto_orderer_ca_l}}
@@ -31,12 +29,12 @@ PeerOrgs:
       Count: 10
     CA:
       # Hostname: ca # implicitly ca.org1.example.com
-      Country: {{crypto_peer_ca_c}}
-      Province: {{crypto_peer_ca_l}}
-      Locality: {{crypto_peer_ca_l}}
-      OrganizationalUnit: {{crypto_peer_ca_ou}}
-      StreetAddress: {{crypto_peer_ca_sa}}
-      PostalCode: {{crypto_peer_ca_pc}}
+      Country: {{fabric_peer_ca_c}}
+      Province: {{fabric_peer_ca_l}}
+      Locality: {{fabric_peer_ca_l}}
+      OrganizationalUnit: {{fabric_peer_ca_ou}}
+      StreetAddress: {{fabric_peer_ca_sa}}
+      PostalCode: {{fabric_peer_ca_pc}}
 
 #####
 

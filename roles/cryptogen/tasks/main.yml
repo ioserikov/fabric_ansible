@@ -1,7 +1,6 @@
 ## roles/cryptogen/tasks/main/yml
 ## we use ctyptogen binary tool for stand but it is neccessary to use accurate security policy for real implements
 
-
 - name: translate crypto template
   template:
     src: "files/crypto-config.yml.j2"
@@ -9,11 +8,63 @@
   become: no
 
 
+- name: generate with template
+  
+   
+
+
+## tls certs for connection
     
 
 
     
 ## generate all keys/certs for msp
+
+
+- name: generate admin sert
+  openssl_certificate:
+    path: undefined # required. Remote absolute path where the generated certificate file should be created or is already located.
+    provider: selfsigned # required. choices: selfsigned;ownca;assertonly;acme. Name of the provider to use to generate/retrieve the OpenSSL certificate. The C(assertonly) provider will not generate files and fail if the certificate file is missing.
+    subject_alt_name_strict: false # not required. If set to True, the I(subject_alt_name) extension field must contain only these values.
+    force: false # not required. Generate the certificate, even if it already exists.
+    csr_path: undefined # not required. Path to the Certificate Signing Request (CSR) used to generate this certificate. This is not required in C(assertonly) mode.
+    acme_chain: true # not required. Include the intermediate certificate to the generated certificate
+    ownca_privatekey_path: undefined # not required. Path to the CA (Certificate Authority) private key to use when signing the certificate.
+    key_usage:  # not required. The I(key_usage) extension field must contain all these values.
+    owner: undefined # not required. Name of the user that should own the file/directory, as would be fed to I(chown).
+    not_before: undefined # not required. The certificate must start to become valid at this point in time. The timestamp is formatted as an ASN.1 TIME.
+    issuer: "Stoloto"
+    subject_strict: false # not required. If set to True, the I(subject) field must contain only these values.
+    selfsigned_version: 3 # not required. Version of the C(selfsigned) certificate. Nowadays it should almost always be C(3).
+    unsafe_writes: no # not required. By default this module uses atomic operations to prevent data corruption or inconsistent reads from the target files, but sometimes systems are configured or just broken in ways that prevent this. One example is docker mounted files, which cannot be updated atomically from inside the container and can only be written in an unsafe manner.,This option allows Ansible to fall back to unsafe methods of updating files when atomic operations fail (however, it doesn't force Ansible to perform unsafe writes). IMPORTANT! Unsafe writes are subject to race conditions and can lead to data corruption.
+    has_expired: false # not required. Checks if the certificate is expired/not expired at the time the module is executed.
+    state: present # not required. choices: present;absent. Whether the certificate should exist or not, taking action if the state is different from what is stated.
+    selfsigned_digest: sha256 # not required. Digest algorithm to be used when self-signing the certificate
+    subject: undefined # not required. Key/value pairs that must be present in the subject name field of the certificate. If you need to specify more than one value with the same key, use a list as value.
+    setype: undefined # not required. Type part of SELinux file context, C(_default) feature works as for I(seuser).
+    key_usage_strict: false # not required. If set to True, the I(key_usage) extension field must contain only these values.
+    selevel: s0 # not required. Level part of the SELinux file context. This is the MLS/MCS attribute, sometimes known as the C(range). C(_default) feature works as for I(seuser).
+    subject_alt_name: undefined # not required. The I(subject_alt_name) extension field must contain these values.
+    extended_key_usage_strict: false # not required. If set to True, the I(extended_key_usage) extension field must contain only these values.
+    selfsigned_not_after: undefined # not required. The timestamp at which the certificate stops being valid. The timestamp is formatted as an ASN.1 TIME. If this value is not specified, certificate will stop being valid 10 years from now.
+    acme_challenge_path: undefined # not required. Path to the ACME challenge directory that is served on U(http://<HOST>:80/.well-known/acme-challenge/)
+    privatekey_path: undefined # not required. Path to the private key to use when signing the certificate.
+    serole: undefined # not required. Role part of SELinux file context, C(_default) feature works as for I(seuser).
+    ownca_not_after: undefined # not required. The timestamp at which the certificate stops being valid. The timestamp is formatted as an ASN.1 TIME. If this value is not specified, certificate will stop being valid 10 years from now.
+    issuer_strict: false # not required. If set to True, the I(issuer) field must contain only these values.
+    ownca_not_before: undefined # not required. The timestamp at which the certificate starts being valid. The timestamp is formatted as an ASN.1 TIME. If this value is not specified, certificate will start being valid from now.
+    invalid_at: undefined # not required. The certificate must be invalid at this point in time. The timestamp is formatted as an ASN.1 TIME.
+    acme_accountkey_path: undefined # not required. Path to the accountkey for the C(acme) provider
+    ownca_digest: sha256 # not required. Digest algorithm to be used for the C(ownca) certificate.
+    extended_key_usage: undefined # not required. The I(extended_key_usage) extension field must contain all these values.
+    not_after: undefined # not required. The certificate must expire at this point in time. The timestamp is formatted as an ASN.1 TIME.
+    signature_algorithms: undefined # not required. list of algorithms that you would accept the certificate to be signed with (e.g. ['sha256WithRSAEncryption', 'sha512WithRSAEncryption']).
+    selfsigned_not_before: undefined # not required. The timestamp at which the certificate starts being valid. The timestamp is formatted as an ASN.1 TIME. If this value is not specified, certificate will start being valid from now.
+    mode: undefined # not required. Mode the file or directory should be. For those used to I(/usr/bin/chmod) remember that modes are actually octal numbers. You must either add a leading zero so that Ansible's YAML parser knows it is an octal number (like C(0644) or C(01777)) or quote it (like C('644') or C('1777')) so Ansible receives a string and can do its own conversion from string into number.  Giving Ansible a number without following one of these rules will end up with a decimal number which will have unexpected results. As of version 1.8, the mode may be specified as a symbolic mode (for example, C(u+rwx) or C(u=rw,g=r,o=r)).
+    ownca_path: undefined # not required. Remote absolute path of the CA (Certificate Authority) certificate.
+    attributes: undefined # not required. Attributes the file or directory should have. To get supported flags look at the man page for I(chattr) on the target system. This string should contain the attributes in the same order as the one displayed by I(lsattr).,C(=) operator is assumed as default, otherwise C(+) or C(-) operators need to be included in the string.
+    valid_in: undefined # not required. The certificate must still be valid in I(valid_in) seconds from now.
+    valid_at: undefined # not required. The certificate must be valid at this point in time. The timestamp is formatted as an ASN.1 TIME.
 
 # cacert - from fabric CA
 #- name : generate certs from Root CA
