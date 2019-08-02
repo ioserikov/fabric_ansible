@@ -21,12 +21,12 @@ PeerOrgs:
     # https://stackoverflow.com/questions/49924937/meaning-of-enablenodeous-in-crypto-config-yaml
     EnableNodeOUs: true
     Template:
-      Count: 10
+      Count: 3
       # Start: 5
       Hostname: {{fabric_peer_hostname_short}}{% raw %}{{.Index}}{% endraw %}
 
     Users:
-      Count: 10
+      Count: 5
     CA:
       # Hostname: ca # implicitly ca.org1.example.com
       Country: {{fabric_peer_ca_c}}
