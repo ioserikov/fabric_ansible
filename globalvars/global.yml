@@ -59,16 +59,18 @@ fabric_orderer_ca_p: ""
 fabric_orderer_ca_ou: lab
 fabric_orderer_ca_sa: Volgogradskiy ave.
 fabric_orderer_ca_pc: 129344
+fabric_orderer_hostname_short: orderer
 
 
 fabric_peer_org: Stoloto
 fabric_peer_domain: orglot.office
-fabric_peer_name_short: peer
+fabric_peer_hostname_short: peer
 fabric_peer_ca_c: RU
 fabric_peer_ca_l: Moscow
 fabric_peer_ca_p: ""
 fabric_peer_ca_sa: Volgogradskiy ave.
 fabric_peer_ca_ou: lab
+fabric_peer_ca_pc: 129344
 
 
 
