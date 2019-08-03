@@ -58,7 +58,7 @@ fabric_orderer_ca_l: Moscow
 fabric_orderer_ca_p: ""
 fabric_orderer_ca_ou: lab
 fabric_orderer_ca_sa: Volgogradskiy ave.
-fabric_orderer_ca_pc: 129344
+fabric_orderer_ca_pc: 109316
 fabric_orderer_hostname_short: orderer
 
 
@@ -70,7 +70,7 @@ fabric_peer_ca_l: Moscow
 fabric_peer_ca_p: ""
 fabric_peer_ca_sa: Volgogradskiy ave.
 fabric_peer_ca_ou: lab
-fabric_peer_ca_pc: 129344
+fabric_peer_ca_pc: 109316
 
 
 

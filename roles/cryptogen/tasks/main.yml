@@ -10,11 +10,13 @@
     src: "files/crypto-config.yml.j2"
     dest: "{{ binary_dir }}crypto-config.yml"
     backup: yes
-
   become: no
 
 
-#- name: generate with template
+  ## 1st = cryptomaterial for ordering services
+
+#- name: generate with template and cryptogen  let use SSL
+
   
    
 
