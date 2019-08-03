@@ -3,10 +3,6 @@
 # we copy src and install from apt and src:  Curl, Docker,Docker-Compose, Fabric, golang
 
 ---
-## key deploy removed to be made in separate role
-
-
-
 
 # TODO - make diffirent repos according to linux version or make in variables
 -
@@ -26,7 +22,7 @@
         
 
    
-- name: repo maintacne work 
+- name: repo maintance work 
   apt:
     update_cache: yes
     force: yes
@@ -62,13 +58,11 @@
     value: "true"    
 
 
-- name: instal GO by role
+
+- name: instal GO by role if curversion is not our
   include_role: 
     name: "{{playbook_dir}}/../roles/golang_install"
-  #vars: 
-  #    ansible_user_id: "{{ ansible_user_id }}"
-
-  
+   
 
          
 # TODO  - make Repo in variable and use local repos
@@ -108,11 +102,20 @@
   become: yes 
 
 
-#- name: install docker composer by curl
-- shell: curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  args:
-     warn: no
-  become: yes
+#- name: install docker composer by get_url + executable mode
+- get_url:
+    dest: /usr/local/bin/docker-compose
+    url: https://github.com/docker/compose/releases/download/1.24.0/docker-compose-Linux-x86_64
+    backup: no # not required. Create a backup file including the timestamp information so you can get the original file back if you somehow clobbered it incorrectly.
+    force: no # not required. If C(yes) and C(dest) is not a directory, will download the file every time and replace the file if the contents change. If C(no), the file will only be downloaded if the destination does not exist. Generally should be C(yes) only for small local files.,Prior to 0.6, this module behaved as if C(yes) was the default.
+    mode: 100755 
+    attributes: 
+  become: yes  
+
+
+
+       
+
 
 
 

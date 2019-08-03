@@ -5,16 +5,21 @@
     register: go_version
     changed_when: false
  
-   
 
+  
+  
   - debug: msg="go_version={{go_version.stdout}}"
   - debug: msg="new_go_version={{new_go_version}}"
+
+
+
  
  # TODO - exit without fail  if go is working
 
  # - name: continue only when version is older
  #   fail: msg="Version already exists"
  #   when: go_version.stdout != "" and "go_version.stdout"
+  
   - debug: msg="continuing with installation"
  
   - name: download golang tar 
@@ -24,20 +29,24 @@
       
       #mode: 0440
     become: no 
-  
+    when: go_version.stdout != new_go_version
+
   - name: Remove old installation of Go
     file:
       path: /usr/local/go
       state: absent
     become: yes
- 
+    when:  go_version.stdout != new_go_version
+
+
   - name: Extract the Go tarball
     unarchive:
       src: "{{home_dir}}/go{{new_go_version}}.linux-amd64.tar.gz"
       dest: /usr/local
       copy: no
     become: yes
- 
+    when:  go_version.stdout != new_go_version
+
   - name: create go directories in home
     file:
       path: "{{item}}"
@@ -46,7 +55,7 @@
     - "{{home_dir}}go"
     - "{{home_dir}}go/bin"
     become: no
-     
+    when:  go_version.stdout != new_go_version
   
   
   - name: modify .bashrc
@@ -59,6 +68,7 @@
       insertafter: EOF
       create: yes
     become: no   
+    when:  go_version.stdout != new_go_version
 
 
   - name: export for current session
@@ -67,3 +77,4 @@
     - export GOPATH=$HOME/go
     - export PATH=$PATH:/usr/local/go/bin
     become: no  
+    when:  go_version.stdout != new_go_version
