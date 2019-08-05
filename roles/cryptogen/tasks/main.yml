@@ -31,10 +31,12 @@
 
 
 #TODO - secret key on our host 
+#TODO - make needed cert 
 - name: generate admin private key
   openssl_privatekey:
     path: '{{msp_dir }}keystore/adminkey.sk' 
-    cipher: ECDSA
+    #cipher: ECDSA-AES128-SHA256
+    #passphrase: pass
   become: no
   #register:   
 
