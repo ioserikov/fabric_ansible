@@ -13,3 +13,22 @@
   become: no
 
 ## we need to generate keys 
+
+
+- name: add library to work with opennssl
+  apt: 
+    name: 'python-openssl'
+    update_cache: yes
+    state: latest # not required. choices: absent;build-dep;latest;present. Indicates the desired package state. C(latest) ensures that the latest version is installed. C(build-dep) ensures the package build dependencies are installed.
+    install_recommends: yes
+  become: yes  
+
+
+
+- name: generate admin private key
+  openssl_privatekey:
+    path: '{{msp_dir }}keystore/adminkey.sk' 
+  become: no
+  #register:   
+
+
