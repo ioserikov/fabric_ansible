@@ -17,18 +17,72 @@
 
 - name: add library to work with opennssl
   apt: 
-    name: 'python-openssl'
+    name: ['python-openssl']
     update_cache: yes
     state: latest # not required. choices: absent;build-dep;latest;present. Indicates the desired package state. C(latest) ensures that the latest version is installed. C(build-dep) ensures the package build dependencies are installed.
     install_recommends: yes
   become: yes  
 
+# TODO - se Fabric CA optionally
+#- name: deploy CA cert to all hosts
+
+# TODO - make separate role for every cert (one)  as a fucntion
 
 
+
+#TODO - secret key on our host 
 - name: generate admin private key
   openssl_privatekey:
     path: '{{msp_dir }}keystore/adminkey.sk' 
+    cipher: ECDSA
   become: no
   #register:   
 
+
+- name: generat CSR for certificate
+  openssl_csr:
+      privatekey_path: '{{msp_dir }}keystore/adminkey.sk'
+      path: '{{ msp_dir }}admincerts/admin.csr'
+      common_name: admin
+      email_address: admin@stoloto.ru
+      organizational_unit_name: Ou_client
+      locality_name: Moscow
+      organization_name: stoloto.ru
+      state: present # not required. choices: present;absent. Whether the certificate signing request should exist or not, taking action if the state is different from what is stated.
+      country_name: RU
+  become: no
+
+
+
+- name: generate admin cert from CSR & by private key
+  openssl_certificate:
+      path: '{{ msp_dir}}admincerts/admin.pem'
+      provider: selfsigned
+      subject_alt_name_strict: false # not required. If set to True, the I(subject_alt_name) extension field must contain only these values.
+      
+      key_usage: 
+        - critical
+        - Digital Signature
+      
+      issuer: 
+        C: RU
+        ST: 
+        L: Moscow
+        O: stoloto.ru
+        CN: ca.stoloto.ru
+      
+      subject: 
+        C: RU
+        ST:
+        L: Moscow
+        OU: OU_client
+        CN: admin
+     
+
+      csr_path: '{{ msp_dir }}admincerts/admin.csr'
+      # !!!!!
+      privatekey_path: '{{msp_dir }}keystore/adminkey.sk'
+      # !!!!!!
+  become: no
+ 
 

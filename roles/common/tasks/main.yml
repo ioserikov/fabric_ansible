@@ -13,7 +13,7 @@
     - '{{ binary_dir }}'     
     - '{{ msp_dir }}' 
     - '{{ config_dir }}'
-    - '{{ msp_dir }}admncerts'
+    - '{{ msp_dir }}admincerts'
     - '{{ msp_dir }}cacerts' 
     - '{{ msp_dir }}keystore' 
     - '{{ msp_dir }}signcerts'

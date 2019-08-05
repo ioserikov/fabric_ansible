@@ -23,7 +23,7 @@
     become: yes
 
     
-    
+  # TO - clear go file firm home + apt remove all soft  
 
 
 - hosts:  fabric_ca_host

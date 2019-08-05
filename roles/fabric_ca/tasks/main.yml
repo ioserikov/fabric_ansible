@@ -33,9 +33,6 @@
     - '{{ keystore }}'
   become: yes  
 
-- name: create fabric_ca dir
-
-
 
 - name: build fabric_ca_server binary
   shell: "{{ item }}"
