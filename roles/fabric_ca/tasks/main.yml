@@ -21,25 +21,19 @@
     enabled: yes
   become: yes  
 
-#TODO - make be file module, not by shell
-- shell: mkdir -p '{{ fabric_ca_dir }}'  
-  args:
-    warn: no
-  become: yes
-   
 
-- name: chmod for our dirs
+- name: create and chmod for our dirs
   file:
     path: '{{ item }}'
     state: directory
     mode: 42775
     recurse: yes
-   # owner: '{{ username }}'
   with_items:
     - '{{ fabric_ca_dir }}'
     - '{{ keystore }}'
   become: yes  
 
+- name: create fabric_ca dir
 
 
 

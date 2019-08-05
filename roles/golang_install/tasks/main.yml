@@ -21,7 +21,8 @@
  #   when: go_version.stdout != "" and "go_version.stdout"
   
   - debug: msg="continuing with installation"
- 
+    when: go_version.stdout != new_go_version
+       
   - name: download golang tar 
     get_url:
       url: "https://storage.googleapis.com/golang/go{{new_go_version}}.linux-amd64.tar.gz"

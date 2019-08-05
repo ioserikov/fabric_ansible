@@ -39,15 +39,12 @@ msp_dir: /usr/local/fabric/msp/
 fabric_ca_dir: /usr/local/fabric/fabric-ca/
 keystore: "{{ fabric_ca_dir}}keystore"
 
+
+
 # other  - look at /roles/fabric_ca/vars/maim.yml
 
 
-
-
-
-
 # cryptoconfig - for Openssl generate
-
 
 
 fabric_orderer_org: stoloto

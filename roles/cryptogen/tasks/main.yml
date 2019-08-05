@@ -12,20 +12,4 @@
     backup: yes
   become: no
 
-
-  ## 1st = cryptomaterial for ordering services
-
-#- name: generate with template and cryptogen  let use SSL
-
-  
-   
-
-
-## tls certs for connection
-    
-
-
-    
-## generate all keys/certs for msp
-
-
+## we need to generate keys 

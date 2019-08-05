@@ -30,8 +30,8 @@
     purge: yes
     autoclean: yes
     allow_unauthenticated: yes
-    upgrade: yes
-    force_apt_get: yes
+    #upgrade: yes
+    #force_apt_get: yes
   become: yes
 
 

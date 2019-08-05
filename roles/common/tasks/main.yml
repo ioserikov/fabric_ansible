@@ -1,26 +1,27 @@
+
 ## rolel/common/tasks/main.ynl
 ---
-- shell: mkdir -p '{{ fabric_dir }}' '{{ config_dir }}' '{{ binary_dir }}' '{{ msp_dir }}' 
-  args:
-    warn: no
-  become: yes
-   
-
-- name: chmod for our dirs
+    
+- name: create all needed folders
   file:
-    path: '{{ item }}'
-    state: directory
-    mode: 42775
-    recurse: yes
-   # owner: '{{ username }}'
+      path: '{{ item }}'
+      recurse: no # not required. recursively set the specified file attributes (applies only to directories)
+      state: directory # not required. choices: absent;directory;file;hard;link;touch. If C(directory), all intermediate subdirectories will be created if they do not exist. Since Ansible 1.7 they will be created with the supplied permissions. If C(file), the file will NOT be created if it does not exist; see the C(touch) value or the M(copy) or M(template) module if you want that behavior.  If C(link), the symbolic link will be created or changed. Use C(hard) for hardlinks. If C(absent), directories will be recursively deleted, and files or symlinks will be unlinked. Note that C(absent) will not cause C(file) to fail if the C(path) does not exist as the state did not change. If C(touch) (new in 1.4), an empty file will be created if the C(path) does not exist, while an existing file or directory will receive updated file access and modification times (similar to the way `touch` works from the command line).
+      mode: 42775 # not required. Mode the file or directory should be. For those used to I(/usr/bin/chmod) remember that modes are actually octal numbers. You must either add a leading zero so that Ansible's YAML parser knows it is an octal number (like C(0644) or C(01777)) or quote it (like C('644') or C('1777')) so Ansible receives a string and can do its own conversion from string into number.  Giving Ansible a number without following one of these rules will end up with a decimal number which will have unexpected results. As of version 1.8, the mode may be specified as a symbolic mode (for example, C(u+rwx) or C(u=rw,g=r,o=r)).
   with_items:
     - '{{ fabric_dir }}'
     - '{{ binary_dir }}'     
     - '{{ msp_dir }}' 
     - '{{ config_dir }}'
-    #- '/usr/local/go'
-  become: yes  
-    
+    - '{{ msp_dir }}admncerts'
+    - '{{ msp_dir }}cacerts' 
+    - '{{ msp_dir }}keystore' 
+    - '{{ msp_dir }}signcerts'
+    - '{{ msp_dir }}tlscacerts'       
+  become: yes    
+
+
+
 
 - name: generate cryptogen bin for hosts from src
   shell: "{{ item }}"
