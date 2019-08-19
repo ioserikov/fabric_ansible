@@ -1,6 +1,6 @@
 ## hostprep/tasks/main.yml - task for instaling all prerequisities for HLF fabric on target hosts
 ## TODO - roles logic by some config.yaml
-- name: prepare hardwre hosts
+- name: prepare hardware hosts
   become: no
   gather_facts: yes
   hosts: hv
@@ -10,7 +10,7 @@
     - role: "{{playbook_dir}}/../roles/hostprep"
   tags:
      - "hosts prepare"
-  # when: from_zero == "true"
+  
 
 - name: " prepare HLF dependicies "
   gather_facts: yes
@@ -23,16 +23,37 @@
     - "utility binary and configs buildings " 
 
 
-#optional.  At production ought to use own CA
+#optional.  At production ought to use own CA or carefuly protect our CAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 - name: "generate and run fabric_ca server and client"
   gather_facts: no
   hosts: fabric_ca_host
   vars_files:
-    - "{{playbook_dir}}/../globalvars/global.yml"
+  - "{{playbook_dir}}/../globalvars/global.yml"
   roles:
      - "{{playbook_dir}}/../roles/fabric_ca"  
   tags: 
     - "fabric ca start"      
+
+
+## private keys generating + CA key for signing 
+- name: generate secret keys on management machine
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - "{{playbook_dir}}/../globalvars/global.yml"
+  roles:
+    - "{{playbook_dir}}/../roles/cryptogen"  
+
+
+
+
+- name: generate secret keys on management machine
+  gather_facts: no
+  hosts: hv
+  vars_files:
+    - "{{playbook_dir}}/../globalvars/global.yml"
+  roles:
+    - "{{playbook_dir}}/../roles/cryptogen"  
 
 
 #optional.  At production ought to use certs for principals

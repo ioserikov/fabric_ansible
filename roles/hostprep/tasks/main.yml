@@ -37,7 +37,7 @@
 
   
 
-
+# TODO - fix versions and\or use signed repo with versions reviews
 - name: "install prerequisities:  CURL, GIT, MC"
   apt:
     name: ['curl', 'mc', 'apt-transport-https', 'git', 'qemu', 'libtool' , 'libltdl-dev', 'htop', 'openssl', 'aptitude']

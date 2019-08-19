@@ -8,3 +8,32 @@ ca_server_name: "stoloto ca"
 fabric_ca_csr_cn: "stoloto-ca-server"
 fabric_ca_operations_listenaddress: 127.0.0.1:9443   # usage ip:port
 
+tls_ca_status:  enable #enable/disable
+tls_ca_sertfiles_name:  ## comma separates list
+tls_client_sertfile_name: tls_sert.pem
+tls_client_keyfile_name: tls_key.pem
+
+csr_cn_user_name:  admin
+
+fabric_client_org: Stoloto
+fabric_client_domain: orglot.office
+fabric_client_hostname_short: client
+fabric_ca_client_c: RU
+fabric_ca_client_l: Moscow
+fabric_ca_client_p: ""
+fabric_ca_client_sa: Volgogradskiy ave.
+fabric_ca_client_ou: lab
+fabric_ca_client_pc: 109316
+
+
+fabric_ca_client_enrid: admin
+fabric_ca_client_type: client
+
+
+fabric_ca_client_affilitation: stoloto
+
+
+
+
+
+

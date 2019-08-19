@@ -74,9 +74,6 @@
       force: yes 
       unsafe_writes: no 
       backup: yes  
-  
-
-
 
 
 
@@ -99,9 +96,21 @@
     enabled: yes
     no_block: yes
   become: yes  
+ 
+
+- name: translate crypto template fabric ca client
+  template:
+    src: "files/fabric_ca_client.yml.j2"
+    dest: "{{ binary_dir }}fabric_ca_client.yml"
+    backup: yes
+    force: yes
+    unsafe_writes: no
+    become: no
+  
 
 
-#- name:   
+  ## TODO - run o generate cryptpateral
+  
 
 
 

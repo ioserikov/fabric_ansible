@@ -2,29 +2,49 @@
 ## roles/cryptogen/tasks/main/yml
 
 
+## we cal this role form playbook twice.  So we use whtn statemen for separating.
 
-## we use ctyptogen binary tool for stand but it is neccessary to use accurate security policy for real implements
 
-- name: translate crypto template
+## we use fabric_ca server
+
+
+- name: translate crypto template for cryptogen
   template:
     src: "files/crypto-config.yml.j2"
     dest: "{{ binary_dir }}crypto-config.yml"
     backup: yes
   become: no
 
-## we need to generate keys 
+
+
+
+
+
+## we need to generate keys  - by fabric_CA for example
+
+
+
 
 
 - name: add library to work with opennssl
   apt: 
     name: ['python-openssl']
     update_cache: yes
-    state: latest # not required. choices: absent;build-dep;latest;present. Indicates the desired package state. C(latest) ensures that the latest version is installed. C(build-dep) ensures the package build dependencies are installed.
+    state: latest 
     install_recommends: yes
   become: yes  
 
 # TODO - se Fabric CA optionally
 #- name: deploy CA cert to all hosts
+- name: take sert from CA for singing all certs
+  
+  copy:
+    path:
+    src: 
+    remote_src: yes  
+  
+  become: no
+
 
 # TODO - make separate role for every cert (one)  as a fucntion
 
@@ -35,8 +55,9 @@
 - name: generate admin private key
   openssl_privatekey:
     path: '{{msp_dir }}keystore/adminkey.sk' 
-    #cipher: ECDSA-AES128-SHA256
-    #passphrase: pass
+    #cipher: ECDSA-AES128-SHA256 ECDHE-ECDSA-AES128-SHA256
+    cipher: ecdhe-ecdsa-aes128-sha256
+    passphrase: pass
   become: no
   #register:   
 
@@ -50,7 +71,7 @@
       organizational_unit_name: Ou_client
       locality_name: Moscow
       organization_name: stoloto.ru
-      state: present # not required. choices: present;absent. Whether the certificate signing request should exist or not, taking action if the state is different from what is stated.
+      state: present 
       country_name: RU
   become: no
 
@@ -80,11 +101,12 @@
         OU: OU_client
         CN: admin
      
-
+     # !!!!!
       csr_path: '{{ msp_dir }}admincerts/admin.csr'
-      # !!!!!
       privatekey_path: '{{msp_dir }}keystore/adminkey.sk'
       # !!!!!!
   become: no
  
 
+
+  

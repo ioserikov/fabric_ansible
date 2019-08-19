@@ -13,17 +13,19 @@ fabric_ca_src_dir: "/home/{{ username }}/fabric_ca/"
 #pubkey src for hosts
 pubkey: "~/.ssh/ioserikov.pub"
 
-# github_release:
+# sources github release numbers:
 new_go_version: 1.11.12
 fabric_release: 1.4
 fabric_ca_release: 1.4
+
+
 
 # tx generatin options
 fabric_channel:  "chan"
 
 
 # common/vars/main.yml
-consensus_type: raft # kafka / solo
+consensus_type: raft # kafka / solo - we use raft
 
 
 # dirs for fabric instances
@@ -33,7 +35,7 @@ binary_dir: /usr/local/fabric/bin/
 msp_dir: /usr/local/fabric/msp/
 
 
-# hosts for diffirent roles
+
 
 #fabric_ca vars 
 fabric_ca_dir: /usr/local/fabric/fabric-ca/
@@ -41,10 +43,11 @@ keystore: "{{ fabric_ca_dir}}keystore"
 
 
 
-# other  - look at /roles/fabric_ca/vars/maim.yml
+#tls sensu_subscription
 
 
-# cryptoconfig - for Openssl generate
+
+# cryptoconfig - for any certs
 
 
 fabric_orderer_org: stoloto
@@ -69,6 +72,7 @@ fabric_peer_ca_sa: Volgogradskiy ave.
 fabric_peer_ca_ou: lab
 fabric_peer_ca_pc: 109316
 
+## CONFG Variables - TODO separate file
 
 
 
