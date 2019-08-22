@@ -16,16 +16,6 @@
   become: no
 
 
-
-
-
-
-## we need to generate keys  - by fabric_CA for example
-
-
-
-
-
 - name: add library to work with opennssl
   apt: 
     name: ['python-openssl']
@@ -33,21 +23,6 @@
     state: latest 
     install_recommends: yes
   become: yes  
-
-# TODO - se Fabric CA optionally
-#- name: deploy CA cert to all hosts
-- name: take sert from CA for singing all certs
-  
-  copy:
-    path:
-    src: 
-    remote_src: yes  
-  
-  become: no
-
-
-# TODO - make separate role for every cert (one)  as a fucntion
-
 
 
 #TODO - secret key on our host 

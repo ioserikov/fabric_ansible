@@ -4,7 +4,7 @@
 ---
 #hosts: fabric_ca_host 
 
-- name: git fabric_ca
+- name: git fabric_ca both client and server
   git:
     repo: 'https://github.com/hyperledger/fabric-ca'
     dest: "{{ home_dir }}fabric_ca"
@@ -34,7 +34,7 @@
   become: yes  
 
 
-- name: build fabric_ca_server binary
+- name: build fabric_ca_server binary and client
   shell: "{{ item }}"
   args:
     chdir: "{{ fabric_ca_src_dir }}"
@@ -42,6 +42,8 @@
     - go get  github.com/hyperledger/fabric-ca
     - make fabric-ca-server
     - cp {{ fabric_ca_src_dir }}bin/fabric-ca-server {{ fabric_ca_dir }}
+    - make fabric-ca-client
+    - cp {{ fabric_ca_src_dir }}bin/fabric-ca-client {{ fabric_ca_dir }}
   become: no
   ignore_errors: True
   environment:
@@ -51,23 +53,9 @@
     GOROOT: /usr/local/go  
 
 
-- name: build fabric_ca_client binary
-  shell: "{{ item }}"
-  args:
-    chdir: "{{ fabric_ca_src_dir }}"
-  with_items:    
-    - go get  github.com/hyperledger/fabric-ca
-    - make fabric-ca-client
-    - cp {{ fabric_ca_src_dir }}bin/fabric-ca-client {{ fabric_ca_dir }}
-  become: no
-  ignore_errors: True
-  environment:
-    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
-    GOPATH: /home/laborant/go
-    GOMOD: /home/laborant/fabric/go.mod
-    GOROOT: /usr/local/go
 
-- name: translate fabric-ca config file to run
+
+- name: translate fabric-ca server config file to run
   template:
       dest: "{{ fabric_ca_dir }}fabric-ca-server-config.yaml"
       src: "files/fabric-ca-server-config.yaml.j2"
@@ -77,9 +65,7 @@
 
 
 
-
-
-- name: transfer systemd .service init file
+- name: transfer systemd .service init file for demonize
   template:
     dest: "/etc/systemd/system/fabric-ca-server.service"
     src: "files/fabric-ca-server.service.j2"
@@ -101,17 +87,14 @@
 - name: translate crypto template fabric ca client
   template:
     src: "files/fabric_ca_client.yml.j2"
-    dest: "{{ binary_dir }}fabric_ca_client.yml"
+    dest: "{{ fabric_ca_dir }}fabric-ca-client-config.yml"
     backup: yes
     force: yes
     unsafe_writes: no
     become: no
-  
 
 
-  ## TODO - run o generate cryptpateral
-  
-
+ ## cryptogen of keys then on managing mschine
 
 
 

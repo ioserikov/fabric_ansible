@@ -10,21 +10,21 @@ home_dir: "/home/{{ username }}/"
 fabric_ca_src_dir: "/home/{{ username }}/fabric_ca/"
 
 
-#pubkey src for hosts
+#pubkey src for hosts for ansible working
 pubkey: "~/.ssh/ioserikov.pub"
 
 # sources github release numbers:
-new_go_version: 1.11.12
-fabric_release: 1.4
-fabric_ca_release: 1.4
+new_go_version: 1.11.12 ## golang
+fabric_release: 1.4      ## hyperledger fabric 
+fabric_ca_release: 1.4  ## hypereldger fabric CA
 
 
 
 # tx generatin options
-fabric_channel:  "chan"
+fabric_channel:  "mercury"
 
 
-# common/vars/main.yml
+# ordering service config:
 consensus_type: raft # kafka / solo - we use raft
 
 
@@ -40,6 +40,7 @@ msp_dir: /usr/local/fabric/msp/
 #fabric_ca vars 
 fabric_ca_dir: /usr/local/fabric/fabric-ca/
 keystore: "{{ fabric_ca_dir}}keystore"
+fabric_ca_host: inc-hv01
 
 
 
