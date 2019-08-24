@@ -44,11 +44,8 @@ fabric_ca_host: inc-hv01
 
 
 
-#tls sensu_subscription
 
-
-
-# cryptoconfig - for any certs
+#cryptoconfig - for any certs
 
 
 fabric_orderer_org: stoloto
@@ -75,5 +72,17 @@ fabric_peer_ca_pc: 109316
 
 ## CONFG Variables - TODO separate file
 
+
+
+
+## orderer config
+
+fabric_orderer_listenport: 7050
+fabric_orderer_tlc_mode: true ## True or False
+fabric_orderer_tls_key: 
+fabric_ordered_tls_sert: 
+fabric_orderer_LocalMSPID: 
+fabric_orderer_fileLedgerLocation:
+fabric_orderer_operationsListenAddress: ## IP:port
 
 

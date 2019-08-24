@@ -1,4 +1,4 @@
-## tamplate for crypto-config
+## template for crypto-config
 
 OrdererOrgs:
   - Name: {{fabric_orderer_org}}
@@ -8,6 +8,7 @@ OrdererOrgs:
       - Hostname: {{fabric_orderer_hostname_short}}1
       - Hostname: {{fabric_orderer_hostname_short}}2
     CA:
+      Hostname: {{ fabric_ca_hostname }} 
       Country: {{fabric_orderer_ca_c}}
       Province: {{fabric_orderer_ca_l}}
       Locality: {{fabric_orderer_ca_l}}
@@ -22,13 +23,11 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 3
-      # Start: 5
       Hostname: {{fabric_peer_hostname_short}}{% raw %}{{.Index}}{% endraw %}
-
     Users:
       Count: 5
     CA:
-      # Hostname: ca # implicitly ca.org1.example.com
+      Hostname: {{ fabric_ca_hostname }} # implicitly ca.org1.example.com
       Country: {{fabric_peer_ca_c}}
       Province: {{fabric_peer_ca_l}}
       Locality: {{fabric_peer_ca_l}}

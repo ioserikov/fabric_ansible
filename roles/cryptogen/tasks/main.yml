@@ -1,12 +1,11 @@
 
 ## roles/cryptogen/tasks/main/yml
-
-
-## we cal this role form playbook twice.  So we use whtn statemen for separating.
-
-
-## we use fabric_ca server
-
+## 
+## This role is for fabric-ca host
+## 
+## host fabric-ca has certs from ca and can generate common cryptomaterial
+## 
+## TODO - repalce by using industrial keys and CAs
 
 - name: translate crypto template for cryptogen
   template:
@@ -16,72 +15,20 @@
   become: no
 
 
-- name: add library to work with opennssl
-  apt: 
-    name: ['python-openssl']
-    update_cache: yes
-    state: latest 
-    install_recommends: yes
-  become: yes  
-
-
-#TODO - secret key on our host 
-#TODO - make needed cert 
-- name: generate admin private key
-  openssl_privatekey:
-    path: '{{msp_dir }}keystore/adminkey.sk' 
-    #cipher: ECDSA-AES128-SHA256 ECDHE-ECDSA-AES128-SHA256
-    cipher: ecdhe-ecdsa-aes128-sha256
-    passphrase: pass
-  become: no
-  #register:   
-
-
-- name: generat CSR for certificate
-  openssl_csr:
-      privatekey_path: '{{msp_dir }}keystore/adminkey.sk'
-      path: '{{ msp_dir }}admincerts/admin.csr'
-      common_name: admin
-      email_address: admin@stoloto.ru
-      organizational_unit_name: Ou_client
-      locality_name: Moscow
-      organization_name: stoloto.ru
-      state: present 
-      country_name: RU
+- name: generate ctyptomaterial using config
+  shell: cryptogen generate --config=crypto-config.yml 
+  args:
+    chdir: {{ binary_dir }}
   become: no
 
 
 
-- name: generate admin cert from CSR & by private key
-  openssl_certificate:
-      path: '{{ msp_dir}}admincerts/admin.pem'
-      provider: selfsigned
-      subject_alt_name_strict: false # not required. If set to True, the I(subject_alt_name) extension field must contain only these values.
-      
-      key_usage: 
-        - critical
-        - Digital Signature
-      
-      issuer: 
-        C: RU
-        ST: 
-        L: Moscow
-        O: stoloto.ru
-        CN: ca.stoloto.ru
-      
-      subject: 
-        C: RU
-        ST:
-        L: Moscow
-        OU: OU_client
-        CN: admin
-     
-     # !!!!!
-      csr_path: '{{ msp_dir }}admincerts/admin.csr'
-      privatekey_path: '{{msp_dir }}keystore/adminkey.sk'
-      # !!!!!!
-  become: no
- 
+- name: distribute cryptomaterial all over the hardware hosts
+  copy:
 
 
-  
+
+
+
+
+
