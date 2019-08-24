@@ -1,4 +1,5 @@
 ###  roles/fabric_ca/tasks/main.yml file
+## this role compiles and starts fabric-ca server wi
 
 
 ---
@@ -12,7 +13,7 @@
   become: no
         
 
-- name: stop fabric-ca service
+- name: stop fabric-ca service if it is present
   ignore_errors: true
   systemd:  
     name: fabric-ca-server
@@ -93,6 +94,9 @@
     unsafe_writes: no
     become: no
 
+
+
+-
 
  ## cryptogen of keys then on managing mschine
 

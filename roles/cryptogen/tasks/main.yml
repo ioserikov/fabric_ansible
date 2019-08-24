@@ -1,30 +1,35 @@
 
 ## roles/cryptogen/tasks/main/yml
 ## 
-## This role is for fabric-ca host
+## This role is for fabric-ca host  - we using openssl and fabric-ca server
 ## 
 ## host fabric-ca has certs from ca and can generate common cryptomaterial
 ## 
 ## TODO - repalce by using industrial keys and CAs
 
-- name: translate crypto template for cryptogen
-  template:
-    src: "files/crypto-config.yml.j2"
-    dest: "{{ binary_dir }}crypto-config.yml"
-    backup: yes
-  become: no
+
+## we parse our cryprtogen
+- name: cryptomaterial on fabric-ca-host for admins
+  openssl_privatekey:
+      path: "{{ keystore }}admin_sk.pem"
+      size: 4096
+      curve: secp256r1
+      type: ECC
+      force: yes
+      # cipher: auto
+      select_crypto_backend: cryptography
+#TODO  - we are using cryptography
+
+- name: cert from secret_key
 
 
-- name: generate ctyptomaterial using config
-  shell: cryptogen generate --config=crypto-config.yml 
-  args:
-    chdir: {{ binary_dir }}
-  become: no
+
+ 
 
 
 
-- name: distribute cryptomaterial all over the hardware hosts
-  copy:
+
+
 
 
 

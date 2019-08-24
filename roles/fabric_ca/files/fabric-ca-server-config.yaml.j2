@@ -88,9 +88,9 @@ ca:
   # Name of this CA
   name: {{ca_server_name}}
   # Key file (is only used to import a private key into BCCSP)
-  keyfile:  ca_sk
+  keyfile:  {{fabric_ca_keyfile}}
   # Certificate file (default: ca-cert.pem)
-  certfile:  ca.pem
+  certfile:  {{fabric_ca_certificate_file}}
   # Chain file
   chainfile:
 
@@ -154,7 +154,7 @@ registry:
 #############################################################################
 db:
   type: sqlite3
-  datasource: fabric-ca-server.db
+  datasource: {{ fabric_ca_server_dbsource }}
   tls:
       enabled: false
       certfiles:

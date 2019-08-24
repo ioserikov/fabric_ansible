@@ -37,7 +37,7 @@ msp_dir: /usr/local/fabric/msp/
 
 
 
-#fabric_ca vars 
+#fabric_ca vars  all other are in /roles/fabric-ca/vars/main.yml
 fabric_ca_dir: /usr/local/fabric/fabric-ca/
 keystore: "{{ fabric_ca_dir}}keystore"
 fabric_ca_host: inc-hv01

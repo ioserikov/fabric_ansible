@@ -1,12 +1,19 @@
 ## roles/fabric_ca/vars/main.yaml  
 
-# host for maintaining fabric-ca:  lets first  from our hosts
+# host for maintaining fabric-ca:
+## this parameterrs are for j2 files: fabric-ca-serve-config.yml.j2 and fabric-ca-client-conf.yml.j2 
 
 fabric_ca_host: inc-hv01
 fabric_ca_port: 7054
 ca_server_name: "stoloto ca"
 fabric_ca_csr_cn: "stoloto-ca-server"
-fabric_ca_operations_listenaddress: 127.0.0.1:9443   # usage ip:port
+fabric_ca_operations_listenaddress: 127.0.0.1:9443   # usage ip:port port for prometheus metrics
+
+fabric_ca_keyfile: ca_sk
+fabric_ca_certificate_file: ca.pem
+fabric_ca_server_dbsource: fabric-ca-server.db 
+
+
 
 tls_ca_status:  enable #enable/disable
 tls_ca_sertfiles_name:  ## comma separates list

@@ -2,7 +2,7 @@
 
 - name: " prepare HLF dependicies "
   gather_facts: yes
-  hosts: hv
+  hosts: fabric_ca_host
   
   vars_files:
      - "{{playbook_dir}}/../globalvars/global.yml"
