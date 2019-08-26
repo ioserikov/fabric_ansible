@@ -31,7 +31,6 @@
     autoclean: yes
     allow_unauthenticated: yes
     #upgrade: yes
-    #force_apt_get: yes
   become: yes
 
 
@@ -59,9 +58,9 @@
 
 
 
-- name: instal GO by role if curversion is not our
+- name: instal GO by subrole if curversion is not our
   include_role: 
-    name: "{{playbook_dir}}/../roles/golang_install"
+    name: "{{playbook_dir}}/../roles/subroles/golang_install"
    
 
          

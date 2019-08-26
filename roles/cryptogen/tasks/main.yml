@@ -6,34 +6,27 @@
 ## host fabric-ca has certs from ca and can generate common cryptomaterial
 ## 
 ## TODO - repalce by using industrial keys and CAs
+## TODO - list of OUs is one for organization!!!! 
 
 
-## we parse our cryprtogen
-- name: cryptomaterial on fabric-ca-host for admins
-  openssl_privatekey:
-      path: "{{ keystore }}admin_sk.pem"
-      size: 4096
-      curve: secp256r1
-      type: ECC
-      force: yes
-      # cipher: auto
-      select_crypto_backend: cryptography
-#TODO  - we are using cryptography
-
-- name: cert from secret_key
+---
+- hosts: fabric-ca
+  name: generate admin keys by subrole and distribute ca and admin keys to management machine
+  include_role:
+    name: "{{playbook_dir}}/../roles/subroles/cryptogen_admin_key"
 
 
-
- 
-
-
+- hosts: hv
+  name: generate orderers signing keys and cryptomaterial
 
 
+- hosts: hv
+  name: generate peers signing keys and cryptomaterial
 
 
+- hosts: hv
+  name: distribute all serts (not keys) to all hosts for united local msp
 
 
-
-
-
-
+  
+#TODO - tls certs for ca, peers, orderers, operation servers
